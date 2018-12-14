@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.tuiguang.repository.UserRepository">
+    <resultMap id="BaseResultMap" type="com.edu.tuiguang.entity.User">
+        <id column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="createby" jdbcType="INTEGER" property="createby"/>
+        <result column="updateby" jdbcType="INTEGER" property="updateby"/>
+        <result column="create_time" jdbcType="DATE" property="createTime"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+    </resultMap>
+    <sql id="BaseColumns">
+        user_id, user_name, avatar, mobile, role_id, createby, updateby, create_time, update_time
+    </sql>
+    <select id="findAll" resultMap="BaseResultMap">
+        select <include refid="BaseColumns" /> from `user`
+    </select>
+    <select id="findList" resultMap="BaseResultMap">
+        select
+          <include refid="BaseColumns" />
+        from `user`
+        where order by createTime desc
+          limit #{pageIndex}, #{pageSize}
+    </select>
+    <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="BaseColumns" />
+          from `user`
+        where user_id = #{userId}
+    </select>
+    <select id="findPassword" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select password from `user` where user_id = #{userId}
+    </select>
+    <select id="total" resultType="java.lang.Long">
+        select count(*) from `user`
+    </select>
+    <insert id="insert" parameterType="com.edu.tuiguang.entity.User">
+        insert into `user` (user_name, avatar, mobile, role_id, createby, create_time)
+        values (#{userName}, #{avatar}, #{mobile}, #{roleId}, #{createby}, #{createTime})
+    </insert>
+    <update id="update" parameterType="com.edu.tuiguang.entity.User">
+        update `user`
+        <set>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId},
+            </if>
+            updateby = #{updateby},
+            update_time = #{updateTime}
+        </set>
+        where user_id = #{userId}
+    </update>
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from `user` where user_id = #{userId}
+    </delete>
+</mapper>

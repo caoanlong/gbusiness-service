@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.tuiguang.repository.RoleRepository">
+    <resultMap id="BaseResultMap" type="com.edu.tuiguang.entity.Role">
+        <id column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="permissions" jdbcType="VARCHAR" property="permissions"/>
+        <result column="createby" jdbcType="INTEGER" property="createby"/>
+        <result column="updateby" jdbcType="INTEGER" property="updateby"/>
+        <result column="create_time" jdbcType="DATE" property="createTime"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+    </resultMap>
+    <sql id="BaseColumns">
+        role_id, role_name, permissions, createby, updateby, create_time, update_time
+    </sql>
+    <select id="findAll" resultMap="BaseResultMap">
+        select <include refid="BaseColumns" /> from `role`
+    </select>
+    <select id="findList" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns" />
+        from `role`
+        where order by createTime desc
+        limit #{pageIndex}, #{pageSize}
+    </select>
+    <select id="findById" resultMap="BaseResultMap">
+        select <include refid="BaseColumns" />
+        from `role`
+        where role_id = #{roleId}
+    </select>
+    <select id="total" resultType="java.lang.Long">
+        select count(*) from `role`
+    </select>
+    <insert id="insert" parameterType="com.edu.tuiguang.entity.User">
+        insert into `role` (role_name, permissions,createby, create_time)
+        values (#{roleName}, #{permissions}, #{createby}, #{createTime})
+    </insert>
+    <update id="update" parameterType="com.edu.tuiguang.entity.User">
+        update `role`
+        <set>
+            <if test="roleName != null">
+                role_name = #{roleName},
+            </if>
+            <if test="permissions != null">
+                permissions = #{permissions},
+            </if>
+            updateby = #{updateby},
+            update_time = #{updateTime}
+        </set>
+        where role_id = #{roleId}
+    </update>
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from `role` where role_id = #{roleId}
+    </delete>
+</mapper>
