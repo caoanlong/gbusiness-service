@@ -1,5 +1,6 @@
 package com.edu.tuiguang.interceptors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -14,7 +15,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 		response.setHeader("Access-Control-Allow-Origin", origin);
 		response.setHeader("Access-Control-Allow-Methods", "*");
 		response.setHeader("Access-Control-Allow-Headers","Origin,Content-Type,Accept,Authorization,X-Requested-With");
+		String token = request.getHeader("Authorization");
+		if (StringUtils.isNotBlank(token)) {
 
+		}
 		return true;
 	}
 

@@ -10,8 +10,8 @@
         <result column="role_id" jdbcType="INTEGER" property="roleId"/>
         <result column="createby" jdbcType="INTEGER" property="createby"/>
         <result column="updateby" jdbcType="INTEGER" property="updateby"/>
-        <result column="create_time" jdbcType="DATE" property="createTime"/>
-        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="BaseColumns">
         user_id, user_name, avatar, mobile, role_id, createby, updateby, create_time, update_time
@@ -24,22 +24,22 @@
           <include refid="BaseColumns" />
         from `user`
         where order by createTime desc
-          limit #{pageIndex}, #{pageSize}
+          limit #{pageStart}, #{pageSize}
     </select>
     <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select <include refid="BaseColumns" />
           from `user`
         where user_id = #{userId}
     </select>
-    <select id="findPassword" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select password from `user` where user_id = #{userId}
-    </select>
     <select id="total" resultType="java.lang.Long">
         select count(*) from `user`
     </select>
+    <select id="findByNameAndPassword" resultMap="BaseResultMap">
+        select * from `user` where user_name = #{useName} and password = #{password}
+    </select>
     <insert id="insert" parameterType="com.edu.tuiguang.entity.User">
-        insert into `user` (user_name, avatar, mobile, role_id, createby, create_time)
-        values (#{userName}, #{avatar}, #{mobile}, #{roleId}, #{createby}, #{createTime})
+        insert into `user` (user_name, password, avatar, mobile, role_id, createby, create_time)
+        values (#{userName}, #{password}, #{avatar}, #{mobile}, #{roleId}, #{createby}, #{createTime})
     </insert>
     <update id="update" parameterType="com.edu.tuiguang.entity.User">
         update `user`

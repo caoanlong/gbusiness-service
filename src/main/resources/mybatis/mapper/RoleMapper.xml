@@ -7,8 +7,8 @@
         <result column="permissions" jdbcType="VARCHAR" property="permissions"/>
         <result column="createby" jdbcType="INTEGER" property="createby"/>
         <result column="updateby" jdbcType="INTEGER" property="updateby"/>
-        <result column="create_time" jdbcType="DATE" property="createTime"/>
-        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="BaseColumns">
         role_id, role_name, permissions, createby, updateby, create_time, update_time
