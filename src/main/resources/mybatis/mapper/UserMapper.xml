@@ -35,7 +35,7 @@
         select count(*) from `user`
     </select>
     <select id="findByNameAndPassword" resultMap="BaseResultMap">
-        select * from `user` where user_name = #{useName} and password = #{password}
+        select * from `user` where user_name = #{userName} and password = #{password}
     </select>
     <insert id="insert" parameterType="com.edu.tuiguang.entity.User">
         insert into `user` (user_name, password, avatar, mobile, role_id, createby, create_time)

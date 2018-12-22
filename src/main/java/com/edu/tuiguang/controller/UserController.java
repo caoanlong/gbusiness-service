@@ -1,23 +1,30 @@
 package com.edu.tuiguang.controller;
 
+import com.edu.tuiguang.config.Constant;
 import com.edu.tuiguang.entity.PageBean;
 import com.edu.tuiguang.entity.ResultBean;
 import com.edu.tuiguang.entity.User;
 import com.edu.tuiguang.enums.ErrorCode;
-import com.edu.tuiguang.exception.CommonException;
+import com.edu.tuiguang.entity.exception.CommonException;
 import com.edu.tuiguang.service.UserService;
+import com.edu.tuiguang.utils.JwtUtils;
 import com.edu.tuiguang.utils.ResultUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private JwtUtils jwtUtils;
 
 	@GetMapping("/findAll")
 	public ResultBean findAll() {
@@ -56,13 +63,21 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResultBean login(String userName, String password) {
-		if (StringUtils.isBlank(userName))
+	public ResultBean login(HttpServletResponse response, @RequestBody Map<String, String> loginInfo) {
+		if (StringUtils.isBlank(loginInfo.get("userName")))
 			throw new CommonException(ErrorCode.USERNAME_NOTNULL);
-		if (StringUtils.isBlank(password))
+		if (StringUtils.isBlank(loginInfo.get("password")))
 			throw new CommonException(ErrorCode.PASSWORD_NOTNULL);
-		User user = userService.findByNameAndPassword(userName, password);
+		User user = userService.findByNameAndPassword(loginInfo.get("userName"), loginInfo.get("password"));
 		if (null == user) throw new CommonException(ErrorCode.USERNAMEORPASSWORD_ERROR);
+
+		return loginReturn(response, user);
+	}
+
+	private ResultBean loginReturn(HttpServletResponse response, User user) {
+		String jwt = jwtUtils.createJWT(Constant.JWT_ID, "Caoanlong", user.getUserId().toString(), Constant.JWT_TTL);
+		response.addHeader("Access-Control-Expose-Headers", "Authorization");
+		response.addHeader("Authorization", jwt);
 		return ResultUtils.success();
 	}
 }

@@ -1,0 +1,9 @@
+package com.edu.tuiguang.config;
+
+import java.util.UUID;
+
+public class Constant {
+	public static final String JWT_ID = UUID.randomUUID().toString();
+	public static final String JWT_SECRET = "cao123789";
+	public static final long JWT_TTL = 86400000 * 30;
+}

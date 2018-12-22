@@ -18,6 +18,18 @@ public enum ErrorCode {
 	 */
 	USERNAMEORPASSWORD_ERROR(103, "帐号或密码错误"),
 	/**
+	 * 未登录错误
+	 */
+	UNLOGIN_ERROR(104, "未登录"),
+	/**
+	 * token错误
+	 */
+	TOKEN_ERROR(105, "token错误"),
+	/**
+	 * token过期
+	 */
+	TOKEN_EXPIRE(106, "token过期"),
+	/**
 	 * 角色不能为空
 	 */
 	ROLE_NOTNULL(1000, "角色不能为空"),

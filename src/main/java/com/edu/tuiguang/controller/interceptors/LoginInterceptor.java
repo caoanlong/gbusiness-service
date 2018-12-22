@@ -1,6 +1,12 @@
-package com.edu.tuiguang.interceptors;
+package com.edu.tuiguang.controller.interceptors;
 
+import com.edu.tuiguang.entity.exception.CommonException;
+import com.edu.tuiguang.enums.ErrorCode;
+import com.edu.tuiguang.utils.JwtUtils;
+import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -8,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class LoginInterceptor implements HandlerInterceptor {
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
 		System.out.println("---------------------开始进入请求地址拦截----------------------------");
@@ -15,9 +22,16 @@ public class LoginInterceptor implements HandlerInterceptor {
 		response.setHeader("Access-Control-Allow-Origin", origin);
 		response.setHeader("Access-Control-Allow-Methods", "*");
 		response.setHeader("Access-Control-Allow-Headers","Origin,Content-Type,Accept,Authorization,X-Requested-With");
-		String token = request.getHeader("Authorization");
-		if (StringUtils.isNotBlank(token)) {
 
+		String token = request.getHeader("Authorization");
+
+		if (StringUtils.isNotBlank(token)) {
+			JwtUtils jwtUtils = new JwtUtils();
+			Claims claims = jwtUtils.parseJWT(token);
+			String subject = claims.getSubject();
+			request.setAttribute("userId", subject);
+		} else {
+			throw new CommonException(ErrorCode.UNLOGIN_ERROR);
 		}
 		return true;
 	}

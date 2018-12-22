@@ -1,4 +1,4 @@
-package com.edu.tuiguang.exception;
+package com.edu.tuiguang.entity.exception;
 
 import com.edu.tuiguang.enums.ErrorCode;
 

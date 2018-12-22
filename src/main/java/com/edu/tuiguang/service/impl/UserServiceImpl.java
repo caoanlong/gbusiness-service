@@ -3,7 +3,7 @@ package com.edu.tuiguang.service.impl;
 import com.edu.tuiguang.entity.PageBean;
 import com.edu.tuiguang.entity.User;
 import com.edu.tuiguang.enums.ErrorCode;
-import com.edu.tuiguang.exception.CommonException;
+import com.edu.tuiguang.entity.exception.CommonException;
 import com.edu.tuiguang.repository.UserRepository;
 import com.edu.tuiguang.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +39,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User findById(Integer userId) {
+		if (null == userId || StringUtils.isBlank(userId.toString()))
+			throw new CommonException(ErrorCode.USERID_NOTNULL);
 		return userRepository.findById(userId);
 	}
 

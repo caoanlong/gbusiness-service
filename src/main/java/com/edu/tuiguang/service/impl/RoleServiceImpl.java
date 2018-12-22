@@ -3,7 +3,7 @@ package com.edu.tuiguang.service.impl;
 import com.edu.tuiguang.entity.PageBean;
 import com.edu.tuiguang.entity.Role;
 import com.edu.tuiguang.enums.ErrorCode;
-import com.edu.tuiguang.exception.CommonException;
+import com.edu.tuiguang.entity.exception.CommonException;
 import com.edu.tuiguang.repository.RoleRepository;
 import com.edu.tuiguang.service.RoleService;
 import org.apache.commons.lang3.StringUtils;
