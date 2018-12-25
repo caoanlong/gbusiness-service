@@ -13,6 +13,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @ControllerAdvice
 public class ExceptionHandle {
@@ -38,6 +39,9 @@ public class ExceptionHandle {
 		} else if (e instanceof MalformedJwtException) {
 			// token错误
 			return ResultUtils.error(ErrorCode.TOKEN_ERROR);
+		} else if (e instanceof MaxUploadSizeExceededException) {
+			// 图片过大
+			return ResultUtils.error(ErrorCode.IMG_TOO_LARGE);
 		} else {
 			// 未知错误
 			return ResultUtils.error(ErrorCode.UNKONW_ERROR);

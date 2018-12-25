@@ -46,9 +46,9 @@ public class RoleServiceImpl implements RoleService {
 	public void insert(Role role) {
 		if (StringUtils.isBlank(role.getRoleName()))
 			throw new CommonException(ErrorCode.ROLE_NOTNULL);
-		role.setCreateby(1);
-		role.setCreateTime(new Date());
-		roleRepository.insert(role);
+//		role.setCreateby(1);
+//		role.setCreateTime(new Date());
+//		roleRepository.insert(role);
 	}
 
 	@Override

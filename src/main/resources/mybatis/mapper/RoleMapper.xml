@@ -5,23 +5,28 @@
         <id column="role_id" jdbcType="INTEGER" property="roleId"/>
         <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
         <result column="permissions" jdbcType="VARCHAR" property="permissions"/>
-        <result column="createby" jdbcType="INTEGER" property="createby"/>
-        <result column="updateby" jdbcType="INTEGER" property="updateby"/>
+        <result column="updateby" jdbcType="INTEGER" property="updateBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <association property="createBy" javaType="com.edu.tuiguang.entity.User">
+            <result column="user_id" property="userId"/>
+            <result column="user_name" property="userName"/>
+        </association>
     </resultMap>
     <sql id="BaseColumns">
         role_id, role_name, permissions, createby, updateby, create_time, update_time
     </sql>
+    <select id="getUser" parameterType="java.lang.Integer" resultType="com.edu.tuiguang.entity.User">
+        select * from `user` where user_id = #{userId}
+    </select>
     <select id="findAll" resultMap="BaseResultMap">
         select <include refid="BaseColumns" /> from `role`
     </select>
     <select id="findList" resultMap="BaseResultMap">
         select
-        <include refid="BaseColumns" />
-        from `role`
-        where order by createTime desc
-        limit #{pageIndex}, #{pageSize}
+          r.role_id, r.role_name, r.permissions, u.*
+        from
+          `role` r, `user` u where r.createby = u.user_id
     </select>
     <select id="findById" resultMap="BaseResultMap">
         select <include refid="BaseColumns" />
@@ -31,11 +36,11 @@
     <select id="total" resultType="java.lang.Long">
         select count(*) from `role`
     </select>
-    <insert id="insert" parameterType="com.edu.tuiguang.entity.User">
+    <insert id="insert" parameterType="com.edu.tuiguang.entity.Role">
         insert into `role` (role_name, permissions,createby, create_time)
         values (#{roleName}, #{permissions}, #{createby}, #{createTime})
     </insert>
-    <update id="update" parameterType="com.edu.tuiguang.entity.User">
+    <update id="update" parameterType="com.edu.tuiguang.entity.Role">
         update `role`
         <set>
             <if test="roleName != null">

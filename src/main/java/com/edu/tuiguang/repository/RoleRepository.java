@@ -1,6 +1,7 @@
 package com.edu.tuiguang.repository;
 
 import com.edu.tuiguang.entity.Role;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 @Repository
 public interface RoleRepository {
 	List<Role> findAll();
-	List<Role> findList(Integer pageStart, Integer pageSize);
+	List<Role> findList(@Param("pageStart") Integer pageStart, @Param("pageSize") Integer pageSize);
 	Role findById(Integer roleId);
 	Long total();
 	void insert(Role role);

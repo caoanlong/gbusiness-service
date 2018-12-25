@@ -23,8 +23,8 @@
         select
           <include refid="BaseColumns" />
         from `user`
-        where order by createTime desc
-          limit #{pageStart}, #{pageSize}
+        order by create_time desc
+        limit #{pageStart}, #{pageSize}
     </select>
     <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select <include refid="BaseColumns" />

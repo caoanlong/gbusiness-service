@@ -43,6 +43,27 @@ public enum ErrorCode {
 	 * 角色ID不能为空
 	 */
 	ROLEID_NOTNULL(1002, "角色ID不能为空"),
+
+	/**
+	 * 图片不能为空
+	 */
+	IMG_NOTNULL(2000, "图片不能为空"),
+
+	/**
+	 * 图片格式错误
+	 */
+	IMG_FORMAT_ERROR(2001, "图片格式错误"),
+
+	/**
+	 * 图片过大
+	 */
+	IMG_TOO_LARGE(2002, "图片过大"),
+
+	/**
+	 * 图片上传失败
+	 */
+	IMG_UPLOAD_ERROR(2003, "图片上传失败"),
+
 	/**
 	 * 未知错误
 	 */

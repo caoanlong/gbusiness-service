@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface UserRepository {
 	List<User> findAll();
-	List<User> findList(Integer pageStart, Integer pageSize);
+	List<User> findList(@Param("pageStart") Integer pageStart, @Param("pageSize") Integer pageSize);
 	User findById(Integer userId);
 	Long total();
 	void insert(User user);

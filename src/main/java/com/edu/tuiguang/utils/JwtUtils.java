@@ -1,6 +1,7 @@
 package com.edu.tuiguang.utils;
 
 import com.edu.tuiguang.config.Constant;
+import com.edu.tuiguang.entity.ResultBean;
 import com.edu.tuiguang.entity.exception.CommonException;
 import com.edu.tuiguang.enums.ErrorCode;
 import io.jsonwebtoken.*;
@@ -79,7 +80,11 @@ public class JwtUtils {
 	public Claims parseJWT(String jwt) {
 		SecretKey key = generalKey();
 		Claims claims = null;
-		claims = Jwts.parser().setSigningKey(key).parseClaimsJws(jwt).getBody();
+		try {
+			claims = Jwts.parser().setSigningKey(key).parseClaimsJws(jwt).getBody();
+		} catch (Exception e) {
+			throw new CommonException(ErrorCode.TOKEN_ERROR);
+		}
 		return claims;
 	}
 }

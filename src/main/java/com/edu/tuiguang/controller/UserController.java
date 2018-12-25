@@ -8,11 +8,15 @@ import com.edu.tuiguang.enums.ErrorCode;
 import com.edu.tuiguang.entity.exception.CommonException;
 import com.edu.tuiguang.service.UserService;
 import com.edu.tuiguang.utils.JwtUtils;
+import com.edu.tuiguang.utils.MD5Utils;
 import com.edu.tuiguang.utils.ResultUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +24,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+	private Logger logger = LoggerFactory.getLogger(UserController.class);
+
 	@Autowired
 	private UserService userService;
 
@@ -44,6 +50,13 @@ public class UserController {
 		return ResultUtils.success(user);
 	}
 
+	@GetMapping("findByToken")
+	public ResultBean findByToken(HttpServletRequest request) {
+		Integer userId = Integer.valueOf((String) request.getAttribute("userId"));
+		User user = userService.findById(userId);
+		return ResultUtils.success(user);
+	}
+
 	@PostMapping("/add")
 	public ResultBean add(@RequestBody User user) {
 		userService.insert(user);
@@ -64,11 +77,16 @@ public class UserController {
 
 	@PostMapping("/login")
 	public ResultBean login(HttpServletResponse response, @RequestBody Map<String, String> loginInfo) {
-		if (StringUtils.isBlank(loginInfo.get("userName")))
+		String userName = loginInfo.get("userName");
+		if (StringUtils.isBlank(userName))
 			throw new CommonException(ErrorCode.USERNAME_NOTNULL);
-		if (StringUtils.isBlank(loginInfo.get("password")))
+		String password = loginInfo.get("password");
+		if (StringUtils.isBlank(password))
 			throw new CommonException(ErrorCode.PASSWORD_NOTNULL);
-		User user = userService.findByNameAndPassword(loginInfo.get("userName"), loginInfo.get("password"));
+
+		String pwd = MD5Utils.md5(password, Constant.MD5_SALT);
+		User user = userService.findByNameAndPassword(userName, pwd);
+
 		if (null == user) throw new CommonException(ErrorCode.USERNAMEORPASSWORD_ERROR);
 
 		return loginReturn(response, user);
