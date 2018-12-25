@@ -9,8 +9,8 @@ CREATE TABLE `user` (
   `avatar` VARCHAR(300) DEFAULT NULL,
   `mobile` VARCHAR(50) DEFAULT NULL,
   `role_id` INT(11) NOT NULL,
-  `createby` INT(11) NOT NULL,
-  `updateby` INT(11) DEFAULT NULL,
+  `create_user_id` INT(11) NOT NULL,
+  `update_user_id` INT(11) DEFAULT NULL,
   `create_time` DATETIME NOT NULL,
   `update_time` DATETIME DEFAULT NULL,
   PRIMARY KEY (`user_id`)
@@ -21,8 +21,8 @@ CREATE TABLE `role` (
   `role_id` INT(11) NOT NULL AUTO_INCREMENT,
   `role_name` VARCHAR(50) NOT NULL,
   `permissions` VARCHAR(300) DEFAULT NULL,
-  `createby` INT(11) NOT NULL,
-  `updateby` INT(11) DEFAULT NULL,
+  `create_user_id` INT(11) NOT NULL,
+  `update_user_id` INT(11) DEFAULT NULL,
   `create_time` DATETIME NOT NULL,
   `update_time` DATETIME DEFAULT NULL,
   PRIMARY KEY (`role_id`)
@@ -35,7 +35,7 @@ INSERT INTO `user` (
   `avatar`,
   `mobile`,
   `role_id`,
-  `createby`,
+  `create_user_id`,
   `create_time`
 ) VALUES (
   'admin',
@@ -51,7 +51,7 @@ INSERT INTO `user` (
 INSERT INTO `role` (
   `role_name`,
   `permissions`,
-  `createby`,
+  `create_user_id`,
   `create_time`
 ) VALUES (
   '超级管理员',
