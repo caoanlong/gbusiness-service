@@ -26,7 +26,7 @@
         select
           r.role_id, r.role_name, r.permissions, u.*
         from
-          `role` r, `user` u where r.createby = u.user_id
+          `role` r, `user` u where r.create_user_id = u.user_id
     </select>
     <select id="findById" resultMap="BaseResultMap">
         select <include refid="BaseColumns" />
