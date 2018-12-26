@@ -11,11 +11,14 @@ public class Role implements Serializable {
 	private Integer roleId;
 	private String roleName;
 	private String permissions;
+	private Integer create_user_id;
 	@JsonIgnoreProperties
 	private User createBy;
 	private String createName;
-	private Integer updateBy;
-//	private String updateName;
+	private Integer update_user_id;
+	@JsonIgnoreProperties
+	private User updateBy;
+	private String updateName;
 	private Date createTime;
 	private Date updateTime;
 
@@ -43,6 +46,14 @@ public class Role implements Serializable {
 		this.permissions = permissions;
 	}
 
+	public Integer getCreate_user_id() {
+		return create_user_id;
+	}
+
+	public void setCreate_user_id(Integer create_user_id) {
+		this.create_user_id = create_user_id;
+	}
+
 	public User getCreateBy() {
 		return createBy;
 	}
@@ -52,23 +63,36 @@ public class Role implements Serializable {
 	}
 
 	public String getCreateName() {
-		return this.createBy.getUserName();
+		return createName;
 	}
 
 	public void setCreateName(String createName) {
 		this.createName = createName;
 	}
 
-	public Integer getUpdateBy() {
+	public Integer getUpdate_user_id() {
+		return update_user_id;
+	}
+
+	public void setUpdate_user_id(Integer update_user_id) {
+		this.update_user_id = update_user_id;
+	}
+
+	public User getUpdateBy() {
 		return updateBy;
 	}
 
-	public void setUpdateBy(Integer updateBy) {
+	public void setUpdateBy(User updateBy) {
 		this.updateBy = updateBy;
 	}
-/*public void setUpdateName(String updateName) {
+
+	public String getUpdateName() {
+		return updateName;
+	}
+
+	public void setUpdateName(String updateName) {
 		this.updateName = updateName;
-	}*/
+	}
 
 	public Date getCreateTime() {
 		return createTime;
