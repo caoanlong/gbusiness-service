@@ -45,6 +45,41 @@ public enum ErrorCode {
 	ROLEID_NOTNULL(1002, "角色ID不能为空"),
 
 	/**
+	 * 姓名不能为空
+	 */
+	NAME_NOTNULL(1003, "姓名不能为空"),
+
+	/**
+	 * 手机不能为空
+	 */
+	MOBILE_NOTNULL(1004, "手机不能为空"),
+
+	/**
+	 * 行业不能为空
+	 */
+	INDUSTRY_NOTNULL(1005, "行业不能为空"),
+
+	/**
+	 * 商家名称不能为空
+	 */
+	MERCHANTNAME_NOTNULL(1006, "商家名称不能为空"),
+
+	/**
+	 * 商家报名人不能为空
+	 */
+	MERCHANTMEMBER_NOTNULL(1007, "商家报名人不能为空"),
+
+	/**
+	 * 商家ID不能为空
+	 */
+	MERCHANTID_NOTNULL(1008, "商家ID不能为空"),
+
+	/**
+	 * 手机号已存在
+	 */
+	MOBILE_EXIST(1009, "手机号已存在"),
+
+	/**
 	 * 图片不能为空
 	 */
 	IMG_NOTNULL(2000, "图片不能为空"),

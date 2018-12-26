@@ -5,28 +5,45 @@
         <id column="role_id" jdbcType="INTEGER" property="roleId"/>
         <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
         <result column="permissions" jdbcType="VARCHAR" property="permissions"/>
-        <result column="updateby" jdbcType="INTEGER" property="updateBy"/>
+        <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
+        <result column="update_user_id" jdbcType="INTEGER" property="updateUserId"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <association property="createBy" javaType="com.edu.tuiguang.entity.User">
             <result column="user_id" property="userId"/>
             <result column="user_name" property="userName"/>
         </association>
+        <association property="updateBy" javaType="com.edu.tuiguang.entity.User">
+            <result column="user_id" property="userId"/>
+            <result column="user_name" property="userName"/>
+        </association>
     </resultMap>
     <sql id="BaseColumns">
-        role_id, role_name, permissions, createby, updateby, create_time, update_time
+        role_id, role_name, permissions, create_user_id, update_user_id, create_time, update_time
     </sql>
-    <select id="getUser" parameterType="java.lang.Integer" resultType="com.edu.tuiguang.entity.User">
-        select * from `user` where user_id = #{userId}
-    </select>
     <select id="findAll" resultMap="BaseResultMap">
-        select <include refid="BaseColumns" /> from `role`
+        select role_id, role_name from `role`
     </select>
     <select id="findList" resultMap="BaseResultMap">
         select
-          r.role_id, r.role_name, r.permissions, u.*
+          r.role_id,
+          r.role_name,
+          r.permissions,
+          r.create_time,
+          r.update_time,
+          u.*
         from
-          `role` r, `user` u where r.create_user_id = u.user_id
+          `role` r,
+          `user` u
+        where
+          1=1
+          <if test="roleName != null">
+              and r.role_name like '%' #{roleName} '%'
+          </if>
+          and
+            (r.create_user_id = u.user_id or r.update_user_id = u.user_id)
+        order by r.create_time desc
+        limit #{pageStart}, #{pageSize}
     </select>
     <select id="findById" resultMap="BaseResultMap">
         select <include refid="BaseColumns" />
@@ -37,8 +54,8 @@
         select count(*) from `role`
     </select>
     <insert id="insert" parameterType="com.edu.tuiguang.entity.Role">
-        insert into `role` (role_name, permissions,createby, create_time)
-        values (#{roleName}, #{permissions}, #{createby}, #{createTime})
+        insert into `role` (role_name, permissions,create_user_id, create_time)
+        values (#{roleName}, #{permissions}, #{createUserId}, #{createTime})
     </insert>
     <update id="update" parameterType="com.edu.tuiguang.entity.Role">
         update `role`
@@ -49,7 +66,7 @@
             <if test="permissions != null">
                 permissions = #{permissions},
             </if>
-            updateby = #{updateby},
+            update_user_id = #{updateUserId},
             update_time = #{updateTime}
         </set>
         where role_id = #{roleId}

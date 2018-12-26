@@ -9,7 +9,11 @@ import java.util.List;
 @Repository
 public interface RoleRepository {
 	List<Role> findAll();
-	List<Role> findList(@Param("pageStart") Integer pageStart, @Param("pageSize") Integer pageSize);
+	List<Role> findList(
+			@Param("pageStart") Integer pageStart,
+			@Param("pageSize") Integer pageSize,
+			@Param("roleName") String roleName
+	);
 	Role findById(Integer roleId);
 	Long total();
 	void insert(Role role);

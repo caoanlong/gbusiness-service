@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.tuiguang.repository.MerchantMemberRepository">
+    <resultMap id="BaseResultMap" type="com.edu.tuiguang.entity.MerchantMember">
+        <id column="merchant_member_id" jdbcType="INTEGER" property="merchantMemberId"/>
+        <result column="merchant_member_name" jdbcType="VARCHAR" property="merchantMemberName"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="industry" jdbcType="VARCHAR" property="industry"/>
+        <result column="is_add_merchant" jdbcType="VARCHAR" property="isAddMerchant"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+          merchant_member_id,
+          merchant_member_name
+        from
+          `merchant_member`
+        where
+          1=1
+          <if test="merchantMemberName != null">
+            and merchant_member_name like '%' #{merchantMemberName} '%'
+          </if>
+          and is_add_merchant = 'N'
+    </select>
+    <select id="findList" resultMap="BaseResultMap">
+        select
+          merchant_member_id,
+          merchant_member_name,
+          mobile,
+          industry,
+          create_time
+        from
+          `merchant_member`
+        where
+          1=1
+          <if test="merchantMemberName != null">
+              and merchant_member_name like '%' #{merchantMemberName} '%'
+          </if>
+        order by create_time desc
+        limit #{pageStart}, #{pageSize}
+    </select>
+    <select id="findById" resultMap="BaseResultMap">
+        select * from `merchant_member`
+        where merchant_member_id = #{merchantMemberId}
+    </select>
+    <select id="findByMobile" resultMap="BaseResultMap">
+        select * from `merchant_member`
+        where mobile = #{mobile}
+    </select>
+    <select id="total" resultType="java.lang.Long">
+        select count(*) from `merchant_member`
+    </select>
+    <insert id="insert" parameterType="com.edu.tuiguang.entity.MerchantMember">
+        insert into `merchant_member` (
+          merchant_member_name,
+          mobile,
+          industry,
+          create_time
+        )
+        values (
+          #{merchantMemberName},
+          #{mobile},
+          #{industry},
+          #{createTime}
+        )
+    </insert>
+    <update id="update" parameterType="com.edu.tuiguang.entity.MerchantMember">
+        update `merchant_member`
+        <set>
+            <if test="merchantMemberName != null">
+                merchant_member_name = #{merchantMemberName},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile},
+            </if>
+            <if test="industry != null">
+                industry = #{industry}
+            </if>
+            <if test="isAddMerchant != null">
+                is_add_merchant = #{isAddMerchant}
+            </if>
+        </set>
+        where merchant_member_id = #{merchantMemberId}
+    </update>
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from `merchant_member` where merchant_member_id = #{merchantMemberId}
+    </delete>
+</mapper>

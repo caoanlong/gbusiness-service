@@ -1,9 +1,9 @@
 package com.edu.tuiguang.controller;
 
+import com.edu.tuiguang.entity.Merchant;
 import com.edu.tuiguang.entity.PageBean;
 import com.edu.tuiguang.entity.ResultBean;
-import com.edu.tuiguang.entity.Role;
-import com.edu.tuiguang.service.RoleService;
+import com.edu.tuiguang.service.MerchantService;
 import com.edu.tuiguang.utils.ResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/role")
-public class RoleController {
+@RequestMapping("/merchant")
+public class MerchantController {
 	@Autowired
-	private RoleService roleService;
+	private MerchantService merchantService;
 
 	@GetMapping("/findAll")
-	public ResultBean findAll() {
-		List<Role> all = roleService.findAll();
+	public ResultBean findAll(@RequestParam(value = "merchantName", required = false) String merchantName) {
+		List<Merchant> all = merchantService.findAll(merchantName);
 		return ResultUtils.success(all);
 	}
 
@@ -28,38 +28,38 @@ public class RoleController {
 	public ResultBean findList(
 			@RequestParam(value = "pageIndex", required = false, defaultValue = "1") Integer pageIndex,
 			@RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-			@RequestParam(value = "roleName", required = false) String roleName
+			@RequestParam(value = "merchantName", required = false) String merchantName
 	) {
-		PageBean<List<Role>> list = roleService.findList(pageIndex, pageSize, roleName);
+		PageBean<List<Merchant>> list = merchantService.findList(pageIndex, pageSize, merchantName);
 		return ResultUtils.success(list);
 	}
 
 	@GetMapping("/findById")
-	public ResultBean findById(@RequestParam("roleId") Integer roleId) {
-		Role role = roleService.findById(roleId);
-		return ResultUtils.success(role);
+	public ResultBean findById(@RequestParam("merchantId") Integer merchantId) {
+		Merchant merchant = merchantService.findById(merchantId);
+		return ResultUtils.success(merchant);
 	}
 
 	@PostMapping("/add")
-	public ResultBean add(HttpServletRequest request, @RequestBody Role role) {
+	public ResultBean add(HttpServletRequest request, @RequestBody Merchant merchant) {
 		Integer userId = Integer.valueOf((String) request.getAttribute("userId"));
-		role.setCreateUserId(userId);
-		roleService.insert(role);
+		merchant.setCreateUserId(userId);
+		merchantService.insert(merchant);
 		return ResultUtils.success();
 	}
 
 	@PostMapping("/update")
-	public ResultBean update(HttpServletRequest request, @RequestBody Role role) {
+	public ResultBean update(HttpServletRequest request, @RequestBody Merchant merchant) {
 		Integer userId = Integer.valueOf((String) request.getAttribute("userId"));
-		role.setUpdateUserId(userId);
-		roleService.update(role);
+		merchant.setUpdateUserId(userId);
+		merchantService.update(merchant);
 		return ResultUtils.success();
 	}
 
 	@PostMapping("/del")
 	public ResultBean del(@RequestBody Map<String, Integer> map) {
-		Integer roleId = map.get("roleId");
-		roleService.del(roleId);
+		Integer merchantId = map.get("merchantId");
+		merchantService.del(merchantId);
 		return ResultUtils.success();
 	}
 }

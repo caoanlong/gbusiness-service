@@ -39,8 +39,12 @@ public class UserController {
 	}
 
 	@GetMapping("/findList")
-	public ResultBean findList(@RequestParam Integer pageIndex, @RequestParam Integer pageSize) {
-		PageBean<List<User>> list = userService.findList(pageIndex, pageSize);
+	public ResultBean findList(
+			@RequestParam(value = "userName", required = false) String userName,
+			@RequestParam(value = "pageIndex", required = false, defaultValue = "1") Integer pageIndex,
+			@RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize
+	) {
+		PageBean<List<User>> list = userService.findList(userName, pageIndex, pageSize);
 		return ResultUtils.success(list);
 	}
 
@@ -58,19 +62,24 @@ public class UserController {
 	}
 
 	@PostMapping("/add")
-	public ResultBean add(@RequestBody User user) {
+	public ResultBean add(HttpServletRequest request, @RequestBody User user) {
+		Integer userId = Integer.valueOf((String) request.getAttribute("userId"));
+		user.setCreateUserId(userId);
 		userService.insert(user);
 		return ResultUtils.success();
 	}
 
 	@PostMapping("/update")
-	public ResultBean update(@RequestBody User user) {
+	public ResultBean update(HttpServletRequest request, @RequestBody User user) {
+		Integer userId = Integer.valueOf((String) request.getAttribute("userId"));
+		user.setUpdateUserId(userId);
 		userService.update(user);
 		return ResultUtils.success();
 	}
 
 	@PostMapping("/del")
-	public ResultBean del(@RequestParam("userId") Integer userId) {
+	public ResultBean del(@RequestBody Map<String, Integer> map) {
+		Integer userId = map.get("userId");
 		userService.del(userId);
 		return ResultUtils.success();
 	}

@@ -9,12 +9,19 @@ import java.util.List;
 @Repository
 public interface UserRepository {
 	List<User> findAll();
-	List<User> findList(@Param("pageStart") Integer pageStart, @Param("pageSize") Integer pageSize);
+	List<User> findList(
+			@Param("userName") String userName,
+			@Param("pageStart") Integer pageStart,
+			@Param("pageSize") Integer pageSize
+	);
 	User findById(Integer userId);
 	Long total();
 	void insert(User user);
 	void update(User user);
 	void del(Integer userId);
 
-	User findByNameAndPassword(@Param("userName") String userName, @Param("password") String password);
+	User findByNameAndPassword(
+			@Param("userName") String userName,
+			@Param("password") String password
+	);
 }

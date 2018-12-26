@@ -1,22 +1,17 @@
 package com.edu.tuiguang.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.io.Serializable;
-import java.util.Date;
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class User implements Serializable {
+public class User extends Base {
 	private Integer userId;
 	private String userName;
 	private String password;
 	private String avatar;
 	private String mobile;
 	private Integer roleId;
-	private Integer createby;
-	private Integer updateby;
-	private Date createTime;
-	private Date updateTime;
+	@JsonIgnore
+	private Role role;
+	private String roleName;
 
 	public Integer getUserId() {
 		return userId;
@@ -66,35 +61,19 @@ public class User implements Serializable {
 		this.roleId = roleId;
 	}
 
-	public Integer getCreateby() {
-		return createby;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setCreateby(Integer createby) {
-		this.createby = createby;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
-	public Integer getUpdateby() {
-		return updateby;
+	public String getRoleName() {
+		return null == role ? null : role.getRoleName();
 	}
 
-	public void setUpdateby(Integer updateby) {
-		this.updateby = updateby;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 }

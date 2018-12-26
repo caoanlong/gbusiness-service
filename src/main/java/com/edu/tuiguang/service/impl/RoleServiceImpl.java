@@ -25,9 +25,9 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public PageBean<List<Role>> findList(Integer pageIndex, Integer pageSize) {
+	public PageBean<List<Role>> findList(Integer pageIndex, Integer pageSize, String roleName) {
 		Integer pageStart = (pageIndex - 1) * pageSize;
-		List<Role> list = roleRepository.findList(pageStart, pageSize);
+		List<Role> list = roleRepository.findList(pageStart, pageSize, roleName);
 		Long total = roleRepository.total();
 		PageBean<List<Role>> pageBean = new PageBean<>();
 		pageBean.setList(list);
@@ -46,15 +46,15 @@ public class RoleServiceImpl implements RoleService {
 	public void insert(Role role) {
 		if (StringUtils.isBlank(role.getRoleName()))
 			throw new CommonException(ErrorCode.ROLE_NOTNULL);
-//		role.setCreateby(1);
-//		role.setCreateTime(new Date());
-//		roleRepository.insert(role);
+		role.setCreateTime(new Date());
+		roleRepository.insert(role);
 	}
 
 	@Override
 	public void update(Role role) {
 		if (null == role.getRoleId() || StringUtils.isBlank(role.getRoleId().toString()))
 			throw new CommonException(ErrorCode.ROLEID_NOTNULL);
+		role.setUpdateTime(new Date());
 		roleRepository.update(role);
 	}
 

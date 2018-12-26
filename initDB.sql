@@ -55,7 +55,7 @@ INSERT INTO `role` (
   `create_time`
 ) VALUES (
   '超级管理员',
-  'home,system',
+  '*',
   1,
   NOW()
 );

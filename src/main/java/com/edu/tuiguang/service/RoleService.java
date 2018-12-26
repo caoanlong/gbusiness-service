@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RoleService {
 	List<Role> findAll();
-	PageBean<List<Role>> findList(Integer pageIndex, Integer pageSize);
+	PageBean<List<Role>> findList(Integer pageIndex, Integer pageSize, String roleName);
 	Role findById(Integer roleId);
 	void insert(Role role);
 	void update(Role role);

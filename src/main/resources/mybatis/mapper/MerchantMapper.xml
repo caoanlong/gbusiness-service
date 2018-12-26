@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.tuiguang.repository.MerchantRepository">
+    <resultMap id="BaseResultMap" type="com.edu.tuiguang.entity.Merchant">
+        <id column="merchant_id" jdbcType="INTEGER" property="merchantId"/>
+        <result column="merchant_name" jdbcType="VARCHAR" property="merchantName"/>
+        <result column="promotion_count" jdbcType="INTEGER" property="promotionCount"/>
+        <result column="sell_count" jdbcType="INTEGER" property="sellCount"/>
+        <result column="merchant_member_id" jdbcType="INTEGER" property="merchantMemberId"/>
+        <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
+        <result column="update_user_id" jdbcType="INTEGER" property="updateUserId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <association property="createBy" javaType="com.edu.tuiguang.entity.User">
+            <result column="user_id" property="userId"/>
+            <result column="user_name" property="userName"/>
+        </association>
+        <association property="updateBy" javaType="com.edu.tuiguang.entity.User">
+            <result column="user_id" property="userId"/>
+            <result column="user_name" property="userName"/>
+        </association>
+        <association property="merchantMember" javaType="com.edu.tuiguang.entity.MerchantMember">
+            <result column="merchant_member_id" property="merchantMemberId"/>
+            <result column="merchant_member_name" property="merchantMemberName"/>
+            <result column="mobile" property="mobile"/>
+            <result column="industry" jdbcType="VARCHAR" property="industry"/>
+        </association>
+    </resultMap>
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+          merchant_id,
+          merchant_name,
+          promotion_count,
+          sell_count
+        from
+          `merchant`
+        where
+          1=1
+          <if test="merchantName != null">
+            and m.merchant_name like '%' #{merchantName} '%'
+          </if>
+    </select>
+    <select id="findList" resultMap="BaseResultMap">
+        select
+          m.merchant_id,
+          m.merchant_name,
+          m.promotion_count,
+          m.sell_count,
+          m.create_time,
+          m.update_time,
+          mm.*
+        from
+          `merchant` m,  `merchant_member` mm
+        where
+          1=1
+          <if test="merchantName != null">
+              and m.merchant_name like '%' #{merchantName} '%'
+          </if>
+          and m.merchant_member_id = mm.merchant_member_id
+        order by create_time desc
+        limit #{pageStart}, #{pageSize}
+    </select>
+    <select id="findById" resultMap="BaseResultMap">
+        select * from `merchant`
+        where merchant_id = #{merchantId}
+    </select>
+    <select id="total" resultType="java.lang.Long">
+        select count(*) from `merchant`
+    </select>
+    <insert id="insert" parameterType="com.edu.tuiguang.entity.Merchant">
+        insert into `merchant` (
+          merchant_name,
+          merchant_member_id,
+          create_time
+        )
+        values (
+          #{merchantName},
+          #{merchantMemberId},
+          #{createTime}
+        )
+    </insert>
+    <update id="update" parameterType="com.edu.tuiguang.entity.Merchant">
+        update `merchant`
+        <set>
+            <if test="merchantName != null">
+                merchant_name = #{merchantName},
+            </if>
+            <if test="merchantMemberId != null">
+                merchant_member_id = #{merchantMemberId},
+            </if>
+            <if test="promotionCount != null">
+                promotion_count = #{promotionCount}
+            </if>
+            <if test="sellCount != null">
+                sell_count = #{sellCount}
+            </if>
+        </set>
+        where merchant_id = #{merchantId}
+    </update>
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from `merchant` where merchant_id = #{merchantId}
+    </delete>
+</mapper>
