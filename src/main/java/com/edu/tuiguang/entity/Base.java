@@ -1,6 +1,5 @@
 package com.edu.tuiguang.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
@@ -8,33 +7,19 @@ import java.util.Date;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Base implements Serializable {
-//	@JsonIgnore
-	private User createBy;
-	private String createName;
-//	@JsonIgnore
+	private String createUserName;
 	private Integer createUserId;
-//	@JsonIgnore
-	private User updateBy;
-	private String updateName;
-//	@JsonIgnore
+	private String updateUserName;
 	private Integer updateUserId;
 	private Date createTime;
 	private Date updateTime;
 
-	public User getCreateBy() {
-		return createBy;
+	public String getCreateUserName() {
+		return createUserName;
 	}
 
-	public void setCreateBy(User createBy) {
-		this.createBy = createBy;
-	}
-
-	public String getCreateName() {
-		return null == createBy ? null : createBy.getUserName();
-	}
-
-	public void setCreateName(String createName) {
-		this.createName = createName;
+	public void setCreateUserName(String createUserName) {
+		this.createUserName = createUserName;
 	}
 
 	public Integer getCreateUserId() {
@@ -45,20 +30,12 @@ public class Base implements Serializable {
 		this.createUserId = createUserId;
 	}
 
-	public User getUpdateBy() {
-		return updateBy;
+	public String getUpdateUserName() {
+		return updateUserName;
 	}
 
-	public void setUpdateBy(User updateBy) {
-		this.updateBy = updateBy;
-	}
-
-	public String getUpdateName() {
-		return null == updateBy ? null : updateBy.getUserName();
-	}
-
-	public void setUpdateName(String updateName) {
-		this.updateName = updateName;
+	public void setUpdateUserName(String updateUserName) {
+		this.updateUserName = updateUserName;
 	}
 
 	public Integer getUpdateUserId() {

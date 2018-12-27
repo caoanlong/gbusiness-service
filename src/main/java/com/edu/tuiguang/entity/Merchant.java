@@ -1,9 +1,14 @@
 package com.edu.tuiguang.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Merchant extends Base {
 	private Integer merchantId;
 	/** 商家名称 **/
 	private String merchantName;
+	/** 商家图片信息 **/
+	private String merchantImage;
 	/** 推广次数 **/
 	private Integer promotionCount;
 	/** 销售次数 **/
@@ -11,9 +16,9 @@ public class Merchant extends Base {
 	/** 商家会员ID **/
 	private Integer merchantMemberId;
 
-	private MerchantMember merchantMember;
-
 	private String merchantMemberName;
+	private String merchantMemberMobile;
+	private String merchantMemberIndustry;
 
 	public Integer getMerchantId() {
 		return merchantId;
@@ -29,6 +34,14 @@ public class Merchant extends Base {
 
 	public void setMerchantName(String merchantName) {
 		this.merchantName = merchantName;
+	}
+
+	public String getMerchantImage() {
+		return merchantImage;
+	}
+
+	public void setMerchantImage(String merchantImage) {
+		this.merchantImage = merchantImage;
 	}
 
 	public Integer getPromotionCount() {
@@ -55,19 +68,27 @@ public class Merchant extends Base {
 		this.merchantMemberId = merchantMemberId;
 	}
 
-	public MerchantMember getMerchantMember() {
-		return merchantMember;
-	}
-
-	public void setMerchantMember(MerchantMember merchantMember) {
-		this.merchantMember = merchantMember;
-	}
-
 	public String getMerchantMemberName() {
-		return merchantMember.getMerchantMemberName();
+		return merchantMemberName;
 	}
 
 	public void setMerchantMemberName(String merchantMemberName) {
 		this.merchantMemberName = merchantMemberName;
+	}
+
+	public String getMerchantMemberMobile() {
+		return merchantMemberMobile;
+	}
+
+	public void setMerchantMemberMobile(String merchantMemberMobile) {
+		this.merchantMemberMobile = merchantMemberMobile;
+	}
+
+	public String getMerchantMemberIndustry() {
+		return merchantMemberIndustry;
+	}
+
+	public void setMerchantMemberIndustry(String merchantMemberIndustry) {
+		this.merchantMemberIndustry = merchantMemberIndustry;
 	}
 }

@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 	public PageBean<List<User>> findList(String userName, Integer pageIndex, Integer pageSize) {
 		Integer pageStart = (pageIndex - 1) * pageSize;
 		List<User> users = userRepository.findList(userName, pageStart, pageSize);
-		Long total = userRepository.total();
+		Long total = userRepository.total(userName);
 		PageBean<List<User>> pageBean = new PageBean<>();
 		pageBean.setList(users);
 		pageBean.setPageIndex(pageIndex);

@@ -1,7 +1,10 @@
 package com.edu.tuiguang.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Date;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MerchantMember {
 	private Integer merchantMemberId;
 	private String merchantMemberName;

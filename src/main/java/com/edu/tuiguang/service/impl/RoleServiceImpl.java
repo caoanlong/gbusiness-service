@@ -28,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
 	public PageBean<List<Role>> findList(Integer pageIndex, Integer pageSize, String roleName) {
 		Integer pageStart = (pageIndex - 1) * pageSize;
 		List<Role> list = roleRepository.findList(pageStart, pageSize, roleName);
-		Long total = roleRepository.total();
+		Long total = roleRepository.total(roleName);
 		PageBean<List<Role>> pageBean = new PageBean<>();
 		pageBean.setList(list);
 		pageBean.setPageIndex(pageIndex);

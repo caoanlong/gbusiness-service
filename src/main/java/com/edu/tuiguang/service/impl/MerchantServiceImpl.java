@@ -34,7 +34,7 @@ public class MerchantServiceImpl implements MerchantService {
 	public PageBean<List<Merchant>> findList(Integer pageIndex, Integer pageSize, String merchantName) {
 		Integer pageStart = (pageIndex - 1) * pageSize;
 		List<Merchant> list = merchantRepository.findList(pageStart, pageSize, merchantName);
-		Long total = merchantRepository.total();
+		Long total = merchantRepository.total(merchantName);
 		PageBean<List<Merchant>> pageBean = new PageBean<>();
 		pageBean.setList(list);
 		pageBean.setPageIndex(pageIndex);

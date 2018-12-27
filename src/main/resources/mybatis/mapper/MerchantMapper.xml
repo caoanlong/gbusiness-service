@@ -4,27 +4,19 @@
     <resultMap id="BaseResultMap" type="com.edu.tuiguang.entity.Merchant">
         <id column="merchant_id" jdbcType="INTEGER" property="merchantId"/>
         <result column="merchant_name" jdbcType="VARCHAR" property="merchantName"/>
+        <result column="merchant_image" jdbcType="VARCHAR" property="merchantImage"/>
         <result column="promotion_count" jdbcType="INTEGER" property="promotionCount"/>
         <result column="sell_count" jdbcType="INTEGER" property="sellCount"/>
         <result column="merchant_member_id" jdbcType="INTEGER" property="merchantMemberId"/>
+        <result column="merchant_member_name" jdbcType="VARCHAR" property="merchantMemberName"/>
+        <result column="merchant_member_mobile" jdbcType="VARCHAR" property="merchantMemberMobile"/>
+        <result column="merchant_member_industry" jdbcType="VARCHAR" property="merchantMemberIndustry"/>
         <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
         <result column="update_user_id" jdbcType="INTEGER" property="updateUserId"/>
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <association property="createBy" javaType="com.edu.tuiguang.entity.User">
-            <result column="user_id" property="userId"/>
-            <result column="user_name" property="userName"/>
-        </association>
-        <association property="updateBy" javaType="com.edu.tuiguang.entity.User">
-            <result column="user_id" property="userId"/>
-            <result column="user_name" property="userName"/>
-        </association>
-        <association property="merchantMember" javaType="com.edu.tuiguang.entity.MerchantMember">
-            <result column="merchant_member_id" property="merchantMemberId"/>
-            <result column="merchant_member_name" property="merchantMemberName"/>
-            <result column="mobile" property="mobile"/>
-            <result column="industry" jdbcType="VARCHAR" property="industry"/>
-        </association>
     </resultMap>
     <select id="findAll" resultMap="BaseResultMap">
         select
@@ -34,48 +26,66 @@
           sell_count
         from
           `merchant`
-        where
-          1=1
           <if test="merchantName != null">
-            and m.merchant_name like '%' #{merchantName} '%'
+              where merchant_name like '%' #{merchantName} '%'
           </if>
     </select>
     <select id="findList" resultMap="BaseResultMap">
         select
-          m.merchant_id,
-          m.merchant_name,
-          m.promotion_count,
-          m.sell_count,
-          m.create_time,
-          m.update_time,
-          mm.*
+          `merchant`.merchant_id,
+          `merchant`.merchant_name,
+          `merchant`.promotion_count,
+          `merchant`.sell_count,
+          `merchant`.create_time,
+          `merchant`.update_time,
+          `merchant_member`.merchant_member_id,
+          `merchant_member`.merchant_member_name,
+          `merchant_member`.mobile as merchant_member_mobile,
+          `merchant_member`.industry as merchant_member_industry,
+          createUser.user_id as create_user_id,
+          createUser.user_name as create_user_name,
+          updateUser.user_id as update_user_id,
+          updateUser.user_name as update_user_name
         from
-          `merchant` m,  `merchant_member` mm
-        where
-          1=1
+          `merchant`
+        left join `merchant_member` on `merchant`.merchant_member_id = `merchant_member`.merchant_member_id
+        left join `user` createUser on `merchant`.create_user_id = createUser.user_id
+        left join `user` updateUser on `merchant`.update_user_id = updateUser.user_id
           <if test="merchantName != null">
-              and m.merchant_name like '%' #{merchantName} '%'
+              where `merchant`.merchant_name like '%' #{merchantName} '%'
           </if>
-          and m.merchant_member_id = mm.merchant_member_id
-        order by create_time desc
+        order by `merchant`.create_time desc
         limit #{pageStart}, #{pageSize}
     </select>
     <select id="findById" resultMap="BaseResultMap">
-        select * from `merchant`
-        where merchant_id = #{merchantId}
+        select
+          `merchant`.*,
+          `merchant_member`.merchant_member_id,
+          `merchant_member`.merchant_member_name
+        from
+          `merchant`
+        left join `merchant_member` on `merchant`.merchant_member_id = `merchant_member`.merchant_member_id
+        where `merchant`.merchant_id = #{merchantId}
     </select>
     <select id="total" resultType="java.lang.Long">
         select count(*) from `merchant`
+        <if test="merchantName != null">
+            where `merchant`.merchant_name like '%' #{merchantName} '%'
+        </if>
     </select>
     <insert id="insert" parameterType="com.edu.tuiguang.entity.Merchant">
         insert into `merchant` (
           merchant_name,
+          merchant_image,
           merchant_member_id,
+          create_user_id,
           create_time
         )
         values (
           #{merchantName},
+          #{merchantImage},
           #{merchantMemberId},
+          #{createUserId},
           #{createTime}
         )
     </insert>
@@ -85,14 +95,23 @@
             <if test="merchantName != null">
                 merchant_name = #{merchantName},
             </if>
+            <if test="merchantImage != null">
+                merchant_image = #{merchantImage},
+            </if>
             <if test="merchantMemberId != null">
                 merchant_member_id = #{merchantMemberId},
             </if>
-            <if test="promotionCount != null">
-                promotion_count = #{promotionCount}
+            <if test="promotionCount != null and promotionCount != 0">
+                promotion_count = #{promotionCount},
             </if>
-            <if test="sellCount != null">
-                sell_count = #{sellCount}
+            <if test="sellCount != null and sellCount != 0">
+                sell_count = #{sellCount},
+            </if>
+            <if test="updateUserId != null">
+                update_user_id = #{updateUserId},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime}
             </if>
         </set>
         where merchant_id = #{merchantId}

@@ -1,7 +1,8 @@
 package com.edu.tuiguang.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User extends Base {
 	private Integer userId;
 	private String userName;
@@ -9,8 +10,6 @@ public class User extends Base {
 	private String avatar;
 	private String mobile;
 	private Integer roleId;
-	@JsonIgnore
-	private Role role;
 	private String roleName;
 
 	public Integer getUserId() {
@@ -61,16 +60,8 @@ public class User extends Base {
 		this.roleId = roleId;
 	}
 
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
 	public String getRoleName() {
-		return null == role ? null : role.getRoleName();
+		return roleName;
 	}
 
 	public void setRoleName(String roleName) {

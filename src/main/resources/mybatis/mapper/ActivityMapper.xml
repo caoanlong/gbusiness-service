@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.tuiguang.repository.ActivityRepository">
+    <resultMap id="BaseResultMap" type="com.edu.tuiguang.entity.Activity">
+        <id column="activity_id" jdbcType="INTEGER" property="activityId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="banner" jdbcType="VARCHAR" property="banner"/>
+        <result column="price" jdbcType="FLOAT" property="price"/>
+        <result column="notes" jdbcType="VARCHAR" property="notes"/>
+        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <collection property="merchants" ofType="com.edu.tuiguang.entity.Merchant">
+            <id column="merchant_id" jdbcType="INTEGER" property="merchantId"/>
+            <result column="merchant_name" jdbcType="VARCHAR" property="merchantName"/>
+            <result column="merchant_image" jdbcType="VARCHAR" property="merchantImage"/>
+        </collection>
+    </resultMap>
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+          activity_id,
+          `name`,
+          end_time
+        from
+          `activity`
+          <if test="merchantName != null">
+              where `name` like '%' #{activityName} '%'
+          </if>
+    </select>
+    <select id="findList" resultMap="BaseResultMap">
+        select
+          `activity`.activity_id,
+          `activity`.`name`,
+          `activity`.banner,
+          `activity`.price,
+          `activity`.end_time,
+          `activity`.create_time,
+          `activity`.update_time,
+          createUser.user_id as create_user_id,
+          createUser.user_name as create_user_name,
+          updateUser.user_id as update_user_id,
+          updateUser.user_name as update_user_name
+        from
+          `activity`
+        left join `user` createUser on `activity`.create_user_id = createUser.user_id
+        left join `user` updateUser on `activity`.update_user_id = updateUser.user_id
+          <if test="merchantName != null">
+              where `activity`.`name` like '%' #{activityName} '%'
+          </if>
+        order by `activity`.create_time desc
+        limit #{pageStart}, #{pageSize}
+    </select>
+    <select id="findById" resultMap="BaseResultMap">
+        select
+          activity.*,
+          merchant.merchant_id,
+          merchant.merchant_name,
+          merchant.merchant_image
+        from
+          activity, activity_merchant, merchant
+        where
+          activity.activity_id = #{activityId}
+          and activity_merchant.activity_id = #{activityId}
+          and merchant.merchant_id = activity_merchant.merchant_id
+    </select>
+    <select id="total" resultType="java.lang.Long">
+        select count(*) from `activity`
+        <if test="merchantName != null">
+            where `activity`.`name` like '%' #{activityName} '%'
+        </if>
+    </select>
+    <insert id="insert" parameterType="com.edu.tuiguang.entity.Activity"  useGeneratedKeys="true" keyProperty="activity_id">
+        insert into `activity` (
+          `name`,
+          banner,
+          price,
+          end_time,
+          create_user_id,
+          create_time
+        )
+        values (
+          #{name},
+          #{banner},
+          #{price},
+          #{endTime},
+          #{createUserId},
+          #{createTime}
+        )
+    </insert>
+    <insert id="insertActivityMerchants" parameterType="java.util.List">
+        insert into
+        `activity_merchant` (activity_id, merchant_id)
+        values
+        <foreach collection="merchants" index="index" item="item" separator=",">
+            (#{activityId}, #{item.merchantId})
+        </foreach>
+    </insert>
+    <update id="update" parameterType="com.edu.tuiguang.entity.Activity">
+        update `activity`
+        <set>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="banner != null">
+                banner = #{banner},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="end_time !=">
+                end_time = #{end_time},
+            </if>
+            <if test="updateUserId != null">
+                update_user_id = #{updateUserId},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime}
+            </if>
+        </set>
+        where activity_id = #{activityId}
+    </update>
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from `activity` where activity_id = #{activityId}
+    </delete>
+</mapper>

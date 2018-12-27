@@ -15,7 +15,7 @@ public interface MerchantRepository {
 			@Param("merchantName") String merchantName
 	);
 	Merchant findById(Integer merchantId);
-	Long total();
+	Long total(@Param("merchantName") String merchantName);
 	void insert(Merchant merchant);
 	void update(Merchant merchant);
 	void del(Integer merchantId);

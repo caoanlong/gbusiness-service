@@ -1,5 +1,8 @@
 package com.edu.tuiguang.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Role extends Base {
 	private Integer roleId;
 	private String roleName;

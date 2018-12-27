@@ -20,15 +20,20 @@ public class MerchantMemberServiceImpl implements MerchantMemberService {
 	private MerchantMemberRepository merchantMemberRepository;
 
 	@Override
-	public List<MerchantMember> findAll(String merchantMemberName) {
-		return merchantMemberRepository.findAll(merchantMemberName);
+	public List<MerchantMember> findAll(String merchantMemberName, String isAddMerchant) {
+		return merchantMemberRepository.findAll(merchantMemberName, isAddMerchant);
 	}
 
 	@Override
-	public PageBean<List<MerchantMember>> findList(Integer pageIndex, Integer pageSize, String merchantMemberName) {
+	public PageBean<List<MerchantMember>> findList(
+			Integer pageIndex,
+			Integer pageSize,
+			String merchantMemberName,
+			String isAddMerchant
+	) {
 		Integer pageStart = (pageIndex - 1) * pageSize;
-		List<MerchantMember> list = merchantMemberRepository.findList(pageStart, pageSize, merchantMemberName);
-		Long total = merchantMemberRepository.total();
+		List<MerchantMember> list = merchantMemberRepository.findList(pageStart, pageSize, merchantMemberName, isAddMerchant);
+		Long total = merchantMemberRepository.total(merchantMemberName, isAddMerchant);
 		PageBean<List<MerchantMember>> pageBean = new PageBean<>();
 		pageBean.setList(list);
 		pageBean.setPageIndex(pageIndex);

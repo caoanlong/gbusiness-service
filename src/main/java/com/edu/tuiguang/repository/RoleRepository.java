@@ -15,7 +15,7 @@ public interface RoleRepository {
 			@Param("roleName") String roleName
 	);
 	Role findById(Integer roleId);
-	Long total();
+	Long total(@Param("roleName") String roleName);
 	void insert(Role role);
 	void update(Role role);
 	void del(Integer roleId);

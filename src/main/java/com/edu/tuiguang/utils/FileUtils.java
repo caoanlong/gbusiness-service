@@ -18,7 +18,8 @@ public class FileUtils {
 	 */
 	public static String upload(MultipartFile file, String path, String fileName) {
 		// 生成新的文件名
-		 String realPath = path + "/" + FileNameUtils.getFileName(fileName);
+		String newFileName = FileNameUtils.getFileName(fileName);
+		String realPath = path + "/" + newFileName;
 
 		//使用原文件名
 //		String realPath = path + "/" + fileName;
@@ -33,7 +34,7 @@ public class FileUtils {
 		// 保存文件
 		try {
 			file.transferTo(dest);
-			return realPath;
+			return newFileName;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

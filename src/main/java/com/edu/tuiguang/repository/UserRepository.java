@@ -15,7 +15,7 @@ public interface UserRepository {
 			@Param("pageSize") Integer pageSize
 	);
 	User findById(Integer userId);
-	Long total();
+	Long total(@Param("userName") String userName);
 	void insert(User user);
 	void update(User user);
 	void del(Integer userId);

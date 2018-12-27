@@ -18,8 +18,11 @@ public class MerchantMemberController {
 	private MerchantMemberService merchantMemberService;
 
 	@GetMapping("/findAll")
-	public ResultBean findAll(@RequestParam(value = "merchantMemberName", required = false) String merchantMemberName) {
-		List<MerchantMember> all = merchantMemberService.findAll(merchantMemberName);
+	public ResultBean findAll(
+			@RequestParam(value = "merchantMemberName", required = false) String merchantMemberName,
+			@RequestParam(value = "isAddMerchant", required = false) String isAddMerchant
+	) {
+		List<MerchantMember> all = merchantMemberService.findAll(merchantMemberName, isAddMerchant);
 		return ResultUtils.success(all);
 	}
 
@@ -27,9 +30,10 @@ public class MerchantMemberController {
 	public ResultBean findList(
 			@RequestParam(value = "pageIndex", required = false, defaultValue = "1") Integer pageIndex,
 			@RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-			@RequestParam(value = "merchantMemberName", required = false) String merchantMemberName
+			@RequestParam(value = "merchantMemberName", required = false) String merchantMemberName,
+			@RequestParam(value = "isAddMerchant", required = false) String isAddMerchant
 	) {
-		PageBean<List<MerchantMember>> list = merchantMemberService.findList(pageIndex, pageSize, merchantMemberName);
+		PageBean<List<MerchantMember>> list = merchantMemberService.findList(pageIndex, pageSize, merchantMemberName, isAddMerchant);
 		return ResultUtils.success(list);
 	}
 

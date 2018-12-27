@@ -17,10 +17,12 @@
           `merchant_member`
         where
           1=1
+          <if test="isAddMerchant != null and isAddMerchant != ''">
+            and is_add_merchant = #{isAddMerchant}
+          </if>
           <if test="merchantMemberName != null">
             and merchant_member_name like '%' #{merchantMemberName} '%'
           </if>
-          and is_add_merchant = 'N'
     </select>
     <select id="findList" resultMap="BaseResultMap">
         select
@@ -28,14 +30,18 @@
           merchant_member_name,
           mobile,
           industry,
+          is_add_merchant,
           create_time
         from
           `merchant_member`
         where
           1=1
           <if test="merchantMemberName != null">
-              and merchant_member_name like '%' #{merchantMemberName} '%'
+             and merchant_member_name like '%' #{merchantMemberName} '%'
           </if>
+        <if test="isAddMerchant != null and isAddMerchant != ''">
+            and is_add_merchant = #{isAddMerchant}
+        </if>
         order by create_time desc
         limit #{pageStart}, #{pageSize}
     </select>
@@ -49,6 +55,14 @@
     </select>
     <select id="total" resultType="java.lang.Long">
         select count(*) from `merchant_member`
+        where
+        1=1
+        <if test="merchantMemberName != null">
+            and merchant_member_name like '%' #{merchantMemberName} '%'
+        </if>
+        <if test="isAddMerchant != null and isAddMerchant != ''">
+            and is_add_merchant = #{isAddMerchant}
+        </if>
     </select>
     <insert id="insert" parameterType="com.edu.tuiguang.entity.MerchantMember">
         insert into `merchant_member` (

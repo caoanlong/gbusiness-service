@@ -8,48 +8,49 @@
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
         <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
         <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
         <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
         <result column="update_user_id" jdbcType="INTEGER" property="updateUserId"/>
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <association property="createBy" javaType="com.edu.tuiguang.entity.User">
-            <result column="user_id" property="userId"/>
-            <result column="user_name" property="userName"/>
-        </association>
-        <association property="updateBy" javaType="com.edu.tuiguang.entity.User">
-            <result column="user_id" property="userId"/>
-            <result column="user_name" property="userName"/>
-        </association>
-        <association property="role" javaType="com.edu.tuiguang.entity.Role">
-            <result column="role_id" property="roleId"/>
-            <result column="role_name" property="roleName"/>
-        </association>
     </resultMap>
     <sql id="BaseColumns">
-        user_id, user_name, avatar, mobile, role_id, create_user_id, update_user_id, create_time, update_time
+        user_id,
+        user_name,
+        avatar,
+        mobile,
+        role_id,
+        create_user_id,
+        update_user_id,
+        create_time,
+        update_time
     </sql>
     <select id="findAll" resultMap="BaseResultMap">
         select <include refid="BaseColumns" /> from `user`
     </select>
     <select id="findList" resultMap="BaseResultMap">
         select
-          u.user_id,
-          u.user_name,
-          u.mobile,
-          u.create_time,
-          u.update_time,
-          r.*
-        from `user` u, `role` r
-        where
-          1=1
+          `user`.user_id,
+          `user`.user_name,
+          `user`.mobile,
+          `user`.create_time,
+          `user`.update_time,
+          r.*,
+          createUser.user_id as create_user_id,
+          createUser.user_name as create_user_name,
+          updateUser.user_id as update_user_id,
+          updateUser.user_name as update_user_name
+        from
+          `user`
+          left join `role` r on `user`.role_id = r.role_id
+          left join `user` createUser on `user`.create_user_id = createUser.user_id
+          left join `user` updateUser on `user`.update_user_id = updateUser.user_id
           <if test="userName != null">
-              and u.user_name like '%' #{userName} '%'
+          where `user`.user_name like '%' #{userName} '%'
           </if>
-          and
-            u.role_id = r.role_id
-          or
-            (u.create_user_id = u.user_id or u.update_user_id = u.user_id)
-        order by u.create_time desc
+        order by `user`.create_time desc
         limit #{pageStart}, #{pageSize}
     </select>
     <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -60,6 +61,9 @@
     </select>
     <select id="total" resultType="java.lang.Long">
         select count(*) from `user`
+        <if test="userName != null">
+            where `user`.user_name like '%' #{userName} '%'
+        </if>
     </select>
     <select id="findByNameAndPassword" resultMap="BaseResultMap">
         select * from `user` where user_name = #{userName} and password = #{password}

@@ -1,7 +1,10 @@
 package com.edu.tuiguang.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResultBean<T> implements Serializable {
 	/** 错误码 **/
 	private Integer code;

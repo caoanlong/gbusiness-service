@@ -80,6 +80,11 @@ public enum ErrorCode {
 	MOBILE_EXIST(1009, "手机号已存在"),
 
 	/**
+	 * 活动ID不能为空
+	 */
+	ACTIVITYID_NOTNULL(1010, "活动ID不能为空"),
+
+	/**
 	 * 图片不能为空
 	 */
 	IMG_NOTNULL(2000, "图片不能为空"),
