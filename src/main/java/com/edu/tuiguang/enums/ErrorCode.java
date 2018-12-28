@@ -85,6 +85,31 @@ public enum ErrorCode {
 	ACTIVITYID_NOTNULL(1010, "活动ID不能为空"),
 
 	/**
+	 * 活动名称不能为空
+	 */
+	ACTIVITYNAME_NOTNULL(1011, "活动名称不能为空"),
+
+	/**
+	 * 活动Banner不能为空
+	 */
+	ACTIVITYBANNER_NOTNULL(1012, "活动Banner不能为空"),
+
+	/**
+	 * 活动购买须知不能为空
+	 */
+	ACTIVITYNOTES_NOTNULL(1013, "活动购买须知不能为空"),
+
+	/**
+	 * 活动价格不能为空
+	 */
+	ACTIVITYPRICE_NOTNULL(1014, "活动价格不能为空"),
+
+	/**
+	 * 活动截止时间不能为空
+	 */
+	ACTIVITYENDTIME_NOTNULL(1015, "活动截止时间不能为空"),
+
+	/**
 	 * 图片不能为空
 	 */
 	IMG_NOTNULL(2000, "图片不能为空"),

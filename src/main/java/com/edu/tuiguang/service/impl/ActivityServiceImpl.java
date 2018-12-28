@@ -1,17 +1,21 @@
 package com.edu.tuiguang.service.impl;
 
 import com.edu.tuiguang.entity.Activity;
+import com.edu.tuiguang.entity.Merchant;
 import com.edu.tuiguang.entity.PageBean;
 import com.edu.tuiguang.entity.exception.CommonException;
+import com.edu.tuiguang.entity.req.ActivityDto;
 import com.edu.tuiguang.enums.ErrorCode;
 import com.edu.tuiguang.repository.ActivityRepository;
 import com.edu.tuiguang.service.ActivityService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
+@Service
 public class ActivityServiceImpl implements ActivityService {
 
 	@Autowired
@@ -41,8 +45,37 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public void insert(Activity activity) {
+	@Transactional
+	public void insert(ActivityDto activityDto, Integer userId) {
+		if (StringUtils.isBlank(activityDto.getName()))
+			throw new CommonException(ErrorCode.ACTIVITYNAME_NOTNULL);
+		if (StringUtils.isBlank(activityDto.getBanner()))
+			throw new CommonException(ErrorCode.ACTIVITYBANNER_NOTNULL);
+		if (StringUtils.isBlank(activityDto.getNotes()))
+			throw new CommonException(ErrorCode.ACTIVITYNOTES_NOTNULL);
+		if (null == activityDto.getPrice() || StringUtils.isBlank(activityDto.getPrice().toString()))
+			throw new CommonException(ErrorCode.ACTIVITYPRICE_NOTNULL);
+		if (null == activityDto.getEndTime() || StringUtils.isBlank(activityDto.getEndTime().toString()))
+			throw new CommonException(ErrorCode.ACTIVITYENDTIME_NOTNULL);
 
+		Activity activity = new Activity();
+		activity.setCreateUserId(userId);
+		activity.setCreateTime(new Date());
+		activity.setName(activityDto.getName());
+		activity.setBanner(activityDto.getBanner());
+		activity.setPrice(activityDto.getPrice());
+		activity.setNotes(activityDto.getNotes());
+		activity.setIntroduction(activityDto.getIntroduction());
+		activity.setEndTime(activityDto.getEndTime());
+		Integer activityId = activityRepository.insert(activity);
+		List<Map<String, Integer>> list = new ArrayList<>();
+		for (Integer merchantId: activityDto.getMerchants()) {
+			Map<String, Integer> map = new HashMap<>();
+			map.put("activityId", activityId);
+			map.put("merchantId", merchantId);
+			list.add(map);
+		}
+		activityRepository.insertActivityMerchants(list);
 	}
 
 	@Override

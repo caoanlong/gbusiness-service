@@ -9,6 +9,12 @@
         <result column="notes" jdbcType="VARCHAR" property="notes"/>
         <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
+        <result column="update_user_id" jdbcType="INTEGER" property="updateUserId"/>
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <collection property="merchants" ofType="com.edu.tuiguang.entity.Merchant">
             <id column="merchant_id" jdbcType="INTEGER" property="merchantId"/>
             <result column="merchant_name" jdbcType="VARCHAR" property="merchantName"/>
@@ -22,7 +28,7 @@
           end_time
         from
           `activity`
-          <if test="merchantName != null">
+          <if test="activityName != null">
               where `name` like '%' #{activityName} '%'
           </if>
     </select>
@@ -30,7 +36,6 @@
         select
           `activity`.activity_id,
           `activity`.`name`,
-          `activity`.banner,
           `activity`.price,
           `activity`.end_time,
           `activity`.create_time,
@@ -43,7 +48,7 @@
           `activity`
         left join `user` createUser on `activity`.create_user_id = createUser.user_id
         left join `user` updateUser on `activity`.update_user_id = updateUser.user_id
-          <if test="merchantName != null">
+          <if test="activityName != null">
               where `activity`.`name` like '%' #{activityName} '%'
           </if>
         order by `activity`.create_time desc
@@ -64,7 +69,7 @@
     </select>
     <select id="total" resultType="java.lang.Long">
         select count(*) from `activity`
-        <if test="merchantName != null">
+        <if test="activityName != null">
             where `activity`.`name` like '%' #{activityName} '%'
         </if>
     </select>
@@ -73,6 +78,8 @@
           `name`,
           banner,
           price,
+          notes,
+          introduction,
           end_time,
           create_user_id,
           create_time
@@ -81,6 +88,8 @@
           #{name},
           #{banner},
           #{price},
+          #{notes},
+          #{introduction},
           #{endTime},
           #{createUserId},
           #{createTime}
@@ -90,8 +99,8 @@
         insert into
         `activity_merchant` (activity_id, merchant_id)
         values
-        <foreach collection="merchants" index="index" item="item" separator=",">
-            (#{activityId}, #{item.merchantId})
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.activityId}, #{item.merchantId})
         </foreach>
     </insert>
     <update id="update" parameterType="com.edu.tuiguang.entity.Activity">

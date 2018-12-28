@@ -1,13 +1,9 @@
-package com.edu.tuiguang.entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
+package com.edu.tuiguang.entity.req;
 
 import java.util.Date;
 import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class Activity extends Base {
+public class ActivityDto {
 	private Integer activityId;
 	/** 活动名称 **/
 	private String name;
@@ -20,8 +16,7 @@ public class Activity extends Base {
 	/** 活动介绍 **/
 	private String introduction;
 	/** 活动商家 **/
-	@JsonIgnore
-	private List<Merchant> merchants;
+	private List<Integer> merchants;
 	/** 活动截止时间 **/
 	private Date endTime;
 
@@ -73,11 +68,11 @@ public class Activity extends Base {
 		this.introduction = introduction;
 	}
 
-	public List<Merchant> getMerchants() {
+	public List<Integer> getMerchants() {
 		return merchants;
 	}
 
-	public void setMerchants(List<Merchant> merchants) {
+	public void setMerchants(List<Integer> merchants) {
 		this.merchants = merchants;
 	}
 

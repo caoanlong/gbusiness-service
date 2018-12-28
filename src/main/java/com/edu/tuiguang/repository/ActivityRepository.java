@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface ActivityRepository {
@@ -16,7 +17,8 @@ public interface ActivityRepository {
 	);
 	Activity findById(Integer activityId);
 	Long total(@Param("activityName") String activityName);
-	void insert(Activity activity);
+	Integer insert(Activity activity);
 	void update(Activity activity);
 	void del(Integer activityId);
+	void insertActivityMerchants(List<Map<String, Integer>> list);
 }
