@@ -51,10 +51,9 @@ public class ActivityController {
 	}
 
 	@PostMapping("/update")
-	public ResultBean update(HttpServletRequest request, @RequestBody Activity activity) {
+	public ResultBean update(HttpServletRequest request, @RequestBody ActivityDto activityDto) {
 		Integer userId = Integer.valueOf((String) request.getAttribute("userId"));
-		activity.setUpdateUserId(userId);
-		activityService.update(activity);
+		activityService.update(activityDto, userId);
 		return ResultUtils.success();
 	}
 

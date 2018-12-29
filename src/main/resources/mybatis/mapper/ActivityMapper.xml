@@ -73,7 +73,7 @@
             where `activity`.`name` like '%' #{activityName} '%'
         </if>
     </select>
-    <insert id="insert" parameterType="com.edu.tuiguang.entity.Activity"  useGeneratedKeys="true" keyProperty="activity_id">
+    <insert id="insert" parameterType="com.edu.tuiguang.entity.Activity"  useGeneratedKeys="true" keyColumn="activity_id" keyProperty="activityId">
         insert into `activity` (
           `name`,
           banner,
@@ -103,6 +103,9 @@
             (#{item.activityId}, #{item.merchantId})
         </foreach>
     </insert>
+    <delete id="delActivityMerchantsByActivityId" parameterType="java.lang.Integer">
+        delete from `activity_merchant` where activity_id = #{activityId}
+    </delete>
     <update id="update" parameterType="com.edu.tuiguang.entity.Activity">
         update `activity`
         <set>
@@ -115,8 +118,14 @@
             <if test="price != null">
                 price = #{price},
             </if>
-            <if test="end_time !=">
-                end_time = #{end_time},
+            <if test="notes != null">
+                notes = #{notes},
+            </if>
+            <if test="introduction != null">
+                introduction = #{introduction},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
             </if>
             <if test="updateUserId != null">
                 update_user_id = #{updateUserId},

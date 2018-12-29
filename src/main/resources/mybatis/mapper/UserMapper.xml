@@ -9,6 +9,7 @@
         <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
         <result column="role_id" jdbcType="INTEGER" property="roleId"/>
         <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="permissions" jdbcType="VARCHAR" property="permissions"/>
         <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
         <result column="update_user_id" jdbcType="INTEGER" property="updateUserId"/>
         <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
@@ -37,7 +38,8 @@
           `user`.mobile,
           `user`.create_time,
           `user`.update_time,
-          r.*,
+          r.role_id,
+          r.role_name,
           createUser.user_id as create_user_id,
           createUser.user_name as create_user_name,
           updateUser.user_id as update_user_id,
@@ -53,11 +55,24 @@
         order by `user`.create_time desc
         limit #{pageStart}, #{pageSize}
     </select>
-    <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="findById" resultMap="BaseResultMap">
         select
-          <include refid="BaseColumns" />
+          u.user_id,
+          u.user_name,
+          u.avatar,
+          u.mobile,
+          u.create_user_id,
+          u.update_user_id,
+          u.create_time,
+          u.update_time,
+          r.role_id,
+          r.role_name,
+          r.permissions
         from
-          `user` where user_id = #{userId}
+          `user` u
+          left join `role` r on u.role_id = r.role_id
+        where
+          u.user_id = #{userId}
     </select>
     <select id="total" resultType="java.lang.Long">
         select count(*) from `user`

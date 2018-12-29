@@ -19,4 +19,5 @@ public interface MerchantRepository {
 	void insert(Merchant merchant);
 	void update(Merchant merchant);
 	void del(Integer merchantId);
+	List<Merchant> findActivitiesByMerchantId(Integer merchantId);
 }

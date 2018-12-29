@@ -67,23 +67,50 @@ public class ActivityServiceImpl implements ActivityService {
 		activity.setNotes(activityDto.getNotes());
 		activity.setIntroduction(activityDto.getIntroduction());
 		activity.setEndTime(activityDto.getEndTime());
-		Integer activityId = activityRepository.insert(activity);
+		activityRepository.insert(activity);
+		Integer activityId = activity.getActivityId();
+		List<Integer> merchantIds = activityDto.getMerchantIds();
+		insertActivityMerchants(merchantIds, activityId);
+	}
+
+	@Override
+	@Transactional
+	public void update(ActivityDto activityDto, Integer userId) {
+		Integer activityId = activityDto.getActivityId();
+		if (null == activityId || StringUtils.isBlank(activityId.toString()))
+			throw new CommonException(ErrorCode.ACTIVITYID_NOTNULL);
+		Activity activity = new Activity();
+		activity.setUpdateUserId(userId);
+		activity.setUpdateTime(new Date());
+		activity.setActivityId(activityId);
+		if (StringUtils.isNotBlank(activityDto.getName()))
+			activity.setName(activityDto.getName());
+		if (StringUtils.isNotBlank(activityDto.getBanner()))
+			activity.setBanner(activityDto.getBanner());
+		if (StringUtils.isNotBlank(activityDto.getPrice().toString()))
+			activity.setPrice(activityDto.getPrice());
+		if (StringUtils.isNotBlank(activityDto.getNotes()))
+			activity.setNotes(activityDto.getNotes());
+		if (StringUtils.isNotBlank(activityDto.getIntroduction()))
+			activity.setIntroduction(activityDto.getIntroduction());
+		if (null != activityDto.getEndTime())
+			activity.setEndTime(activityDto.getEndTime());
+		activityRepository.update(activity);
+		activityRepository.delActivityMerchantsByActivityId(activityId);
+		List<Integer> merchantIds = activityDto.getMerchantIds();
+		insertActivityMerchants(merchantIds, activityId);
+	}
+
+	private void insertActivityMerchants(List<Integer> merchantIds, Integer activityId) {
+		if (merchantIds.size() < 1) return;
 		List<Map<String, Integer>> list = new ArrayList<>();
-		for (Integer merchantId: activityDto.getMerchants()) {
+		for (Integer merchantId: merchantIds) {
 			Map<String, Integer> map = new HashMap<>();
 			map.put("activityId", activityId);
 			map.put("merchantId", merchantId);
 			list.add(map);
 		}
 		activityRepository.insertActivityMerchants(list);
-	}
-
-	@Override
-	public void update(Activity activity) {
-		if (null == activity.getActivityId() || StringUtils.isBlank(activity.getActivityId().toString()))
-			throw new CommonException(ErrorCode.ACTIVITYID_NOTNULL);
-		activity.setUpdateTime(new Date());
-		activityRepository.update(activity);
 	}
 
 	@Override

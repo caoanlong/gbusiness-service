@@ -1,5 +1,7 @@
 package com.edu.tuiguang.entity.req;
 
+import com.edu.tuiguang.entity.Merchant;
+
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +18,7 @@ public class ActivityDto {
 	/** 活动介绍 **/
 	private String introduction;
 	/** 活动商家 **/
-	private List<Integer> merchants;
+	private List<Integer> merchantIds;
 	/** 活动截止时间 **/
 	private Date endTime;
 
@@ -68,12 +70,12 @@ public class ActivityDto {
 		this.introduction = introduction;
 	}
 
-	public List<Integer> getMerchants() {
-		return merchants;
+	public List<Integer> getMerchantIds() {
+		return merchantIds;
 	}
 
-	public void setMerchants(List<Integer> merchants) {
-		this.merchants = merchants;
+	public void setMerchantIds(List<Integer> merchantIds) {
+		this.merchantIds = merchantIds;
 	}
 
 	public Date getEndTime() {

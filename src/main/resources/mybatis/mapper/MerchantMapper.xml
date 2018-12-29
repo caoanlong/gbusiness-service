@@ -73,6 +73,23 @@
             where `merchant`.merchant_name like '%' #{merchantName} '%'
         </if>
     </select>
+
+    <resultMap id="ActivitiesResultMap" type="com.edu.tuiguang.entity.Activity">
+        <id column="activity_id" jdbcType="INTEGER" property="activityId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="price" jdbcType="VARCHAR" property="price"/>
+    </resultMap>
+    <select id="findActivitiesByMerchantId" resultMap="ActivitiesResultMap">
+        select
+          `activity`.activity_id,
+          `activity`.name,
+          `activity`.price
+        from
+          `activity_merchant`
+        left join `activity` on `activity_merchant`.activity_id = `activity`.activity_id
+        where
+          merchant_id = #{merchantId}
+    </select>
     <insert id="insert" parameterType="com.edu.tuiguang.entity.Merchant">
         insert into `merchant` (
           merchant_name,

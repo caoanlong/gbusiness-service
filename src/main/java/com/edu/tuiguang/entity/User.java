@@ -11,6 +11,7 @@ public class User extends Base {
 	private String mobile;
 	private Integer roleId;
 	private String roleName;
+	private String permissions;
 
 	public Integer getUserId() {
 		return userId;
@@ -66,5 +67,13 @@ public class User extends Base {
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+
+	public String getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(String permissions) {
+		this.permissions = permissions;
 	}
 }

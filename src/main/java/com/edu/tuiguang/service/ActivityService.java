@@ -11,6 +11,6 @@ public interface ActivityService {
 	PageBean<List<Activity>> findList(Integer pageIndex, Integer pageSize, String activityName);
 	Activity findById(Integer activityId);
 	void insert(ActivityDto activityDto, Integer userId);
-	void update(Activity activity);
+	void update(ActivityDto activityDto, Integer userId);
 	void del(Integer activityId);
 }

@@ -75,7 +75,19 @@ public class MerchantServiceImpl implements MerchantService {
 	}
 
 	@Override
+	@Transactional
 	public void del(Integer merchantId) {
+		Merchant merchant = merchantRepository.findById(merchantId);
+		Integer merchantMemberId = merchant.getMerchantMemberId();
+		MerchantMember merchantMember = new MerchantMember();
+		merchantMember.setMerchantMemberId(merchantMemberId);
+		merchantMember.setIsAddMerchant("N");
+		merchantMemberRepository.update(merchantMember);
 		merchantRepository.del(merchantId);
+	}
+
+	@Override
+	public List<Merchant> findActivities(Integer merchantId) {
+		return merchantRepository.findActivitiesByMerchantId(merchantId);
 	}
 }

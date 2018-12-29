@@ -20,7 +20,7 @@ public class Activity extends Base {
 	/** 活动介绍 **/
 	private String introduction;
 	/** 活动商家 **/
-	@JsonIgnore
+	private List<Integer> merchantIds;
 	private List<Merchant> merchants;
 	/** 活动截止时间 **/
 	private Date endTime;
@@ -71,6 +71,14 @@ public class Activity extends Base {
 
 	public void setIntroduction(String introduction) {
 		this.introduction = introduction;
+	}
+
+	public List<Integer> getMerchantIds() {
+		return merchantIds;
+	}
+
+	public void setMerchantIds(List<Integer> merchantIds) {
+		this.merchantIds = merchantIds;
 	}
 
 	public List<Merchant> getMerchants() {

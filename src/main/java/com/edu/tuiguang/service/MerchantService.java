@@ -12,4 +12,5 @@ public interface MerchantService {
 	void insert(Merchant merchant);
 	void update(Merchant merchant);
 	void del(Integer merchantId);
+	List<Merchant> findActivities(Integer merchantId);
 }

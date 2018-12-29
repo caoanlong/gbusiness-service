@@ -21,4 +21,5 @@ public interface ActivityRepository {
 	void update(Activity activity);
 	void del(Integer activityId);
 	void insertActivityMerchants(List<Map<String, Integer>> list);
+	void delActivityMerchantsByActivityId(Integer activityId);
 }

@@ -40,6 +40,12 @@ public class MerchantController {
 		return ResultUtils.success(merchant);
 	}
 
+	@GetMapping("/findActivities")
+	public ResultBean findActivities(@RequestParam("merchantId") Integer merchantId) {
+		List<Merchant> activities = merchantService.findActivities(merchantId);
+		return ResultUtils.success(activities);
+	}
+
 	@PostMapping("/add")
 	public ResultBean add(HttpServletRequest request, @RequestBody Merchant merchant) {
 		Integer userId = Integer.valueOf((String) request.getAttribute("userId"));
