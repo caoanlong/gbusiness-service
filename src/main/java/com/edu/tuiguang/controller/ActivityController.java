@@ -43,6 +43,11 @@ public class ActivityController {
 		return ResultUtils.success(activity);
 	}
 
+	@GetMapping("/findDetail")
+	public ResultBean findDetail(@RequestParam("activityId") Integer activityId) {
+		return findById(activityId);
+	}
+
 	@PostMapping("/add")
 	public ResultBean add(HttpServletRequest request, @RequestBody ActivityDto activityDto) {
 		Integer userId = Integer.valueOf((String) request.getAttribute("userId"));
