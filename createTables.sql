@@ -1,5 +1,5 @@
 /* 创建数据库 */
--- CREATE DATABASE `edutg`;
+CREATE DATABASE `edutg`;
 
 /* 创建用户表 */
 CREATE TABLE `user` (
@@ -54,34 +54,51 @@ CREATE TABLE `merchant` (
   PRIMARY KEY (`merchant_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
 
-/* 创建初始用户 */
-INSERT INTO `user` (
-  `user_name`,
-  `password`,
-  `avatar`,
-  `mobile`,
-  `role_id`,
-  `create_user_id`,
-  `create_time`
-) VALUES (
-  'admin',
-  MD5('123456caonimadebi'),
-  'https://gitee.com/uploads/48/1682248_caoanlong.png?1513153951',
-  '13049497395',
-  1,
-  1,
-  NOW()
-);
+/* 创建活动表 */
+CREATE TABLE `activity` (
+  `activity_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL,
+  `banner` varchar(500) NOT NULL,
+  `price` float NOT NULL,
+  `notes` text NOT NULL,
+  `introduction` varchar(300) DEFAULT NULL,
+  `end_time` datetime NOT NULL,
+  `create_user_id` int(11) NOT NULL,
+  `update_user_id` int(11) DEFAULT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`activity_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8
 
-/* 创建初始角色 */
-INSERT INTO `role` (
-  `role_name`,
-  `permissions`,
-  `create_user_id`,
-  `create_time`
-) VALUES (
-  '超级管理员',
-  '*',
-  1,
-  NOW()
-);
+/* 创建活动商家关联表 */
+CREATE TABLE `activity_merchant` (
+  `activity_id` int(11) NOT NULL,
+  `merchant_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+/* 创建会员表 */
+CREATE TABLE `member` (
+  `member_id` int(11) NOT NULL AUTO_INCREMENT,
+  `nick_name` varchar(50) DEFAULT NULL,
+  `real_name` varchar(50) DEFAULT NULL,
+  `mobile` varchar(50) NOT NULL,
+  `sex` char(1) DEFAULT NULL,
+  `head_img_url` varchar(300) DEFAULT NULL,
+  `open_id` varchar(200) DEFAULT NULL,
+  `union_id` varchar(200) DEFAULT NULL,
+  `create_time` datetime NOT NULL,
+  PRIMARY KEY (`member_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+/* 创建订单表 */
+CREATE TABLE `order` (
+  `order_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_no` varchar(200) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `activity_id` int(11) NOT NULL,
+  `price` float NOT NULL,
+  `create_time` datetime NOT NULL,
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+

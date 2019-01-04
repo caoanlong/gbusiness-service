@@ -2,6 +2,9 @@ package com.edu.tuiguang.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+/**
+ * 系统角色
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Role extends Base {
 	private Integer roleId;

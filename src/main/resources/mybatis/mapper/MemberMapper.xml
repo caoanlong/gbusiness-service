@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.tuiguang.repository.MemberRepository">
+    <resultMap id="BaseResultMap" type="com.edu.tuiguang.entity.Member">
+        <id column="member_id" jdbcType="INTEGER" property="memberId"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="head_img_url" jdbcType="VARCHAR" property="headImgUrl"/>
+        <result column="open_id" jdbcType="VARCHAR" property="openId"/>
+        <result column="union_id" jdbcType="VARCHAR" property="unionId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <select id="findAll" resultMap="BaseResultMap">
+        select member_id, real_name, nick_name, mobile, open_id, union_id from `member`
+    </select>
+    <select id="findList" resultMap="BaseResultMap">
+        select * from `member`
+          <if test="mobile != null">
+            where mobile like '%' #{mobile} '%'
+          </if>
+        order by create_time desc
+        limit #{pageStart}, #{pageSize}
+    </select>
+    <select id="findById" resultMap="BaseResultMap">
+        select * from `member`
+        where member_id = #{memberId}
+    </select>
+    <select id="total" resultType="java.lang.Long">
+        select count(*) from `member`
+    </select>
+    <insert id="insert" parameterType="com.edu.tuiguang.entity.Member">
+        insert into `member` (
+          real_name,
+          nick_name,
+          mobile,
+          sex,
+          head_img_url,
+          open_id,
+          union_id,
+          create_time
+        )
+        values (
+          #{realName},
+          #{nickName},
+          #{mobile},
+          #{sex},
+          #{headImgUrl},
+          #{openId},
+          #{unionId},
+          #{createTime}
+        )
+    </insert>
+    <update id="update" parameterType="com.edu.tuiguang.entity.Member">
+        update `member`
+        <set>
+            <if test="realName != null">
+                real_name = #{realName},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="headImgUrl != null">
+                head_img_url = #{headImgUrl},
+            </if>
+        </set>
+        where member_id = #{memberId}
+    </update>
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from `member` where member_id = #{memberId}
+    </delete>
+</mapper>

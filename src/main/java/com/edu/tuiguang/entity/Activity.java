@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 活动
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Activity extends Base {
 	private Integer activityId;

@@ -2,6 +2,9 @@ package com.edu.tuiguang.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+/**
+ * 商家
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Merchant extends Base {
 	private Integer merchantId;

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.tuiguang.repository.OrderRepository">
+    <resultMap id="BaseResultMap" type="com.edu.tuiguang.entity.Order">
+        <id column="order_id" jdbcType="INTEGER" property="orderId"/>
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="member_id" jdbcType="INTEGER" property="memberId"/>
+        <result column="activity_id" jdbcType="INTEGER" property="activityId"/>
+        <result column="price" jdbcType="FLOAT" property="price"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+          `order`.order_id,
+          `order`.order_no,
+          `member`.order_no,
+          `member`.order_no,
+          `member`.order_no
+        from
+          `order`
+          left join `member` on `order`.member_id = `member`.member_id
+          left join `activity` on `order`.activity_id = `activity`.activity_id
+    </select>
+    <select id="findList" resultMap="BaseResultMap">
+        select
+          `order`.order_id,
+          `order`.order_no,
+          `member`.real_name as member_real_name,
+          `member`.nick_name as member_nick_name,
+          `member`.mobile as member_mobile,
+          `activity`.name as activity_name,
+          `activity`.price as activity_price
+        from
+          `order`
+          left join `member` on `order`.member_id = `member`.member_id
+          left join `activity` on `order`.activity_id = `activity`.activity_id
+          <if test="orderNo != null">
+            where `order`.order_no like '%' #{orderNo} '%'
+          </if>
+          <if test="memberId != null">
+            and `order`.member_id = #{memberId}
+          </if>
+          <if test="activityId != null">
+            and `order`.activity_id = #{activityId}
+          </if>
+        order by `order`.create_time desc
+        limit #{pageStart}, #{pageSize}
+    </select>
+    <select id="findById" resultMap="BaseResultMap">
+        select
+          `order`.*,
+          `member`.*,
+          `activity`.*
+        from `order`
+        where order_id = #{orderId}
+    </select>
+    <select id="total" resultType="java.lang.Long">
+        select count(*) from `order`
+        <if test="orderNo != null">
+            where `order`.order_no like '%' #{orderNo} '%'
+        </if>
+        <if test="memberId != null">
+            and `order`.member_id = #{memberId}
+        </if>
+        <if test="activityId != null">
+            and `order`.activity_id = #{activityId}
+        </if>
+    </select>
+    <insert id="insert" parameterType="com.edu.tuiguang.entity.Order">
+        insert into `order` (
+            order_no,
+            member_id,
+            activity_id,
+            price,
+            create_time
+        )
+        values (
+            #{orderNo},
+            #{memberId},
+            #{activityId},
+            #{price},
+            #{createTime}
+        )
+    </insert>
+    <update id="update" parameterType="com.edu.tuiguang.entity.Order">
+        update `order`
+        <set>
+            <if test="memberId != null">
+                member_id = #{memberId},
+            </if>
+            <if test="activityId != null">
+                activity_id = #{activityId},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+        </set>
+        where order_id = #{orderId}
+    </update>
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from `order` where order_id = #{orderId}
+    </delete>
+</mapper>

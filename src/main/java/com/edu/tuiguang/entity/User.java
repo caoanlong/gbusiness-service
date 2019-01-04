@@ -2,6 +2,9 @@ package com.edu.tuiguang.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+/**
+ * 系统用户
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User extends Base {
 	private Integer userId;
