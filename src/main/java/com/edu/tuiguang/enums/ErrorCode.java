@@ -30,6 +30,11 @@ public enum ErrorCode {
 	 */
 	TOKEN_EXPIRE(106, "token过期"),
 	/**
+	 * openid不能为空
+	 */
+	OPENID_NOTNULL(107, "openid不能为空"),
+
+	/**
 	 * 角色不能为空
 	 */
 	ROLE_NOTNULL(1000, "角色不能为空"),

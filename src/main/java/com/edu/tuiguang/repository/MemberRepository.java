@@ -15,8 +15,10 @@ public interface MemberRepository {
 			@Param("mobile") String mobile
 	);
 	Member findById(Integer memberId);
+	Member findByMobile(String mobile);
+	Member findByOpenId(String openId);
 	Long total(@Param("mobile") String mobile);
-	void insert(Member member);
+	Integer insert(Member member);
 	void update(Member member);
 	void del(Integer memberId);
 }

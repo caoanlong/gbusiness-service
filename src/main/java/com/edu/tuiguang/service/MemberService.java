@@ -13,7 +13,9 @@ public interface MemberService {
 			String mobile
 	);
 	Member findById(Integer memberId);
-	void insert(Member member);
+	Member findByMobile(String mobile);
+	Member findByOpenId(String openId);
+	Integer insert(Member member);
 	void update(Member member);
 	void del(Integer memberId);
 }

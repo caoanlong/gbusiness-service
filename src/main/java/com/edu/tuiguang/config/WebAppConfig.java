@@ -14,6 +14,12 @@ public class WebAppConfig implements WebMvcConfigurer {
 		registry.addInterceptor(new LoginInterceptor())
 				.addPathPatterns("/**")
 				.excludePathPatterns(
+						"/app/user/login",
+						"/activity/findDetail"
+				);
+		registry.addInterceptor(new LoginInterceptor())
+				.addPathPatterns("/driver**")
+				.excludePathPatterns(
 						"/user/login",
 						"/activity/findDetail"
 				);

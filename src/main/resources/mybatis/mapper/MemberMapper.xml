@@ -27,10 +27,14 @@
         select * from `member`
         where member_id = #{memberId}
     </select>
+    <select id="findByMobile" resultMap="BaseResultMap">
+        select * from `member`
+        where mobile = #{mobile}
+    </select>
     <select id="total" resultType="java.lang.Long">
         select count(*) from `member`
     </select>
-    <insert id="insert" parameterType="com.edu.tuiguang.entity.Member">
+    <insert id="insert" parameterType="com.edu.tuiguang.entity.Member" useGeneratedKeys="true" keyColumn="member_id" keyProperty="memberId">
         insert into `member` (
           real_name,
           nick_name,
