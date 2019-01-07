@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/activity")
+@RequestMapping(value = {"/admin/activity", "/app/activity"})
 public class ActivityController {
 	@Autowired
 	private ActivityService activityService;

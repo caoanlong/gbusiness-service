@@ -1,6 +1,7 @@
 package com.edu.tuiguang.config;
 
-import com.edu.tuiguang.controller.interceptors.LoginInterceptor;
+import com.edu.tuiguang.controller.interceptors.AdminInterceptor;
+import com.edu.tuiguang.controller.interceptors.AppInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -11,17 +12,17 @@ public class WebAppConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		// 注册自定义拦截器，添加拦截路径和排除拦截路径
-		registry.addInterceptor(new LoginInterceptor())
-				.addPathPatterns("/**")
+		registry.addInterceptor(new AdminInterceptor())
+				.addPathPatterns("/admin/**")
 				.excludePathPatterns(
-						"/app/user/login",
-						"/activity/findDetail"
+						"/admin/user/login",
+						"/admin/activity/findDetail"
 				);
-		registry.addInterceptor(new LoginInterceptor())
-				.addPathPatterns("/driver**")
+		registry.addInterceptor(new AppInterceptor())
+				.addPathPatterns("/app/**")
 				.excludePathPatterns(
-						"/user/login",
-						"/activity/findDetail"
+						"/app/member/login",
+						"/app/activity/findDetail"
 				);
 	}
 

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping(value = {"/admin/member", "/app/member"})
 public class MemberController {
 	@Autowired
 	private MemberService memberService;

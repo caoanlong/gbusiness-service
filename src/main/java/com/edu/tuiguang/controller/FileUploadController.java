@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/file")
+@RequestMapping(value = {"/admin/file", "/app/file"})
 public class FileUploadController {
 
 	@Value("${file.path}")

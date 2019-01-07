@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/merchant")
+@RequestMapping(value = {"/admin/merchant", "/app/merchant"})
 public class MerchantController {
 	@Autowired
 	private MerchantService merchantService;

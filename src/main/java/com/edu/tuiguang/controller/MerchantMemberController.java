@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/merchantMember")
+@RequestMapping("/admin/merchantMember")
 public class MerchantMemberController {
 	@Autowired
 	private MerchantMemberService merchantMemberService;
