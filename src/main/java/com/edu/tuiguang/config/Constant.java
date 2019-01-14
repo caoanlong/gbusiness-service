@@ -9,4 +9,7 @@ public class Constant {
 
 	// MD5盐
 	public static final String MD5_SALT = "caonimadebi";
+
+	public static final Integer SMSCODE_NUM = 6;
+	public static final Integer SMSCODE_EXPIRE = 60*5;
 }

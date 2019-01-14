@@ -35,6 +35,11 @@ public enum ErrorCode {
 	OPENID_NOTNULL(107, "openid不能为空"),
 
 	/**
+	 * 验证码错误
+	 */
+	SMSCODE_ERROR(108, "验证码错误"),
+
+	/**
 	 * 角色不能为空
 	 */
 	ROLE_NOTNULL(1000, "角色不能为空"),
@@ -113,6 +118,16 @@ public enum ErrorCode {
 	 * 活动截止时间不能为空
 	 */
 	ACTIVITYENDTIME_NOTNULL(1015, "活动截止时间不能为空"),
+
+	/**
+	 * 手机号格式不正确
+	 */
+	MOBILE_FORMAT_ERROR(1016, "手机号格式不正确"),
+
+	/**
+	 * 短信验证码不能为空
+	 */
+	SMSCODE_NOTNULL(1017, "短信验证码不能为空"),
 
 	/**
 	 * 图片不能为空

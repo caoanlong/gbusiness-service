@@ -4,12 +4,14 @@ package com.edu.tuiguang.controller;
 import com.edu.tuiguang.config.Constant;
 import com.edu.tuiguang.entity.*;
 import com.edu.tuiguang.entity.exception.CommonException;
+import com.edu.tuiguang.entity.req.MemberDto;
 import com.edu.tuiguang.enums.ErrorCode;
 import com.edu.tuiguang.service.MemberService;
 import com.edu.tuiguang.utils.JwtUtils;
 import com.edu.tuiguang.utils.ResultUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,9 @@ import java.util.Map;
 public class MemberController {
 	@Autowired
 	private MemberService memberService;
+
+	@Autowired
+	private StringRedisTemplate stringRedisTemplate;
 
 	@Autowired
 	private JwtUtils jwtUtils;
@@ -82,45 +87,41 @@ public class MemberController {
 	}
 
 	@PostMapping("/login")
-	public ResultBean login(HttpServletResponse response, @RequestBody Map<String, String> loginInfo) {
-		String mobile = loginInfo.get("mobile");
-		String openId = loginInfo.get("openid");
-		String unionid = loginInfo.get("unionid");
-		String nickName = loginInfo.get("nickName");
-		String headImgUrl = loginInfo.get("headImgUrl");
-		String sex = loginInfo.get("sex");
+	public ResultBean login(HttpServletResponse response, @RequestBody MemberDto memberDto) {
+		String mobile = memberDto.getMobile();
+		String smsCode = memberDto.getSmsCode();
+		String openId = memberDto.getOpenid();
+		String unionid = memberDto.getUnionid();
+		String nickName = memberDto.getNickName();
+		String headImgUrl = memberDto.getHeadImgUrl();
+		String sex = memberDto.getSex();
+
 		if (StringUtils.isBlank(mobile))
 			throw new CommonException(ErrorCode.MOBILE_NOTNULL);
-		if (StringUtils.isBlank(openId))
-			throw new CommonException(ErrorCode.OPENID_NOTNULL);
+		if (StringUtils.isBlank(smsCode))
+			throw new CommonException(ErrorCode.SMSCODE_NOTNULL);
+
+		String redisCode = stringRedisTemplate.opsForValue().get(mobile);
+		if (redisCode != smsCode)
+			throw new CommonException(ErrorCode.SMSCODE_ERROR);
 
 		Member memberForMobile = memberService.findByMobile(mobile);
-		Member memberForOpenId = memberService.findByOpenId(openId);
 
 		Integer memberId = null;
+		Member member = new Member();
+		member.setMobile(mobile);
+		member.setNickName(nickName);
+		member.setSex(sex);
+		member.setHeadImgUrl(headImgUrl);
+		member.setOpenId(openId);
+		member.setUnionId(unionid);
 		if (null == memberForMobile) {
 			// 如果用户不存在
-			Member member = new Member();
-			member.setMobile(mobile);
-			member.setNickName(nickName);
-			member.setSex(sex);
-			member.setHeadImgUrl(headImgUrl);
-			member.setOpenId(openId);
-			member.setUnionId(unionid);
 			memberId = memberService.insert(member);
 		} else {
 			memberId = memberForMobile.getMemberId();
-			if (null == memberForOpenId) {
-				memberForMobile.setOpenId(openId);
-				memberForMobile.setUnionId(unionid);
-				memberService.update(memberForMobile);
-			} else {
-				if (mobile != memberForOpenId.getMobile()) {
-					memberForMobile.setOpenId(openId);
-					memberForMobile.setUnionId(unionid);
-					memberService.update(memberForMobile);
-				}
-			}
+			member.setMemberId(memberId);
+			memberService.update(member);
 		}
 
 		return loginReturn(response, memberId.toString());
