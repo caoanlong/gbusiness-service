@@ -3,6 +3,7 @@ package com.edu.tuiguang.controller;
 import com.edu.tuiguang.enums.ErrorCode;
 import com.edu.tuiguang.utils.FileUtils;
 import com.edu.tuiguang.utils.ResultUtils;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+@Api(value = "FileUploadController", description = "文件上传")
 @RestController
 @RequestMapping(value = {"/admin/file", "/app/file"})
 public class FileUploadController {

@@ -10,9 +10,9 @@ import com.edu.tuiguang.service.UserService;
 import com.edu.tuiguang.utils.JwtUtils;
 import com.edu.tuiguang.utils.MD5Utils;
 import com.edu.tuiguang.utils.ResultUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
+@Api(value = "UserController", description = "用户管理")
 @RestController
 @RequestMapping("/admin/user")
 public class UserController {
-	private Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	private UserService userService;
@@ -61,6 +61,7 @@ public class UserController {
 		return ResultUtils.success(user);
 	}
 
+	@ApiOperation(value = "添加用户")
 	@PostMapping("/add")
 	public ResultBean add(HttpServletRequest request, @RequestBody User user) {
 		Integer userId = Integer.valueOf((String) request.getAttribute("userId"));

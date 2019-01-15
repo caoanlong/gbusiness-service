@@ -5,6 +5,7 @@ import com.edu.tuiguang.entity.PageBean;
 import com.edu.tuiguang.entity.ResultBean;
 import com.edu.tuiguang.service.MerchantService;
 import com.edu.tuiguang.utils.ResultUtils;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
+@Api(value = "MerchantController", description = "商家管理")
 @RestController
 @RequestMapping(value = {"/admin/merchant", "/app/merchant"})
 public class MerchantController {

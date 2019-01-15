@@ -5,12 +5,14 @@ import com.edu.tuiguang.entity.PageBean;
 import com.edu.tuiguang.entity.ResultBean;
 import com.edu.tuiguang.service.MerchantMemberService;
 import com.edu.tuiguang.utils.ResultUtils;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
+@Api(value = "MerchantMemberController", description = "商家报名人管理")
 @RestController
 @RequestMapping("/admin/merchantMember")
 public class MerchantMemberController {

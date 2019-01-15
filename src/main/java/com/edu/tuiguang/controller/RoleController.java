@@ -5,6 +5,7 @@ import com.edu.tuiguang.entity.ResultBean;
 import com.edu.tuiguang.entity.Role;
 import com.edu.tuiguang.service.RoleService;
 import com.edu.tuiguang.utils.ResultUtils;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
+@Api(value = "RoleController", description = "角色管理")
 @RestController
 @RequestMapping("/admin/role")
 public class RoleController {

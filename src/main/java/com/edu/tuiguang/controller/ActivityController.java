@@ -8,6 +8,7 @@ import com.edu.tuiguang.entity.req.ActivityDto;
 import com.edu.tuiguang.service.ActivityService;
 import com.edu.tuiguang.service.RoleService;
 import com.edu.tuiguang.utils.ResultUtils;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
+@Api(value = "ActivityController", description = "活动管理")
 @RestController
 @RequestMapping(value = {"/admin/activity", "/app/activity"})
 public class ActivityController {

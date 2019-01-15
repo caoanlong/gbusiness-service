@@ -15,8 +15,7 @@ public class WebAppConfig implements WebMvcConfigurer {
 		registry.addInterceptor(new AdminInterceptor())
 				.addPathPatterns("/admin/**")
 				.excludePathPatterns(
-						"/admin/user/login",
-						"/admin/activity/findDetail"
+						"/admin/user/login"
 				);
 		registry.addInterceptor(new AppInterceptor())
 				.addPathPatterns("/app/**")

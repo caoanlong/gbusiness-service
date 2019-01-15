@@ -7,6 +7,7 @@ import com.edu.tuiguang.enums.ErrorCode;
 import com.edu.tuiguang.utils.RandomUtils;
 import com.edu.tuiguang.utils.ResultUtils;
 import com.edu.tuiguang.utils.ValidatorUtils;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeUnit;
 
+@Api(value = "CommonController", description = "通用")
 @RestController
 @RequestMapping("/common")
 public class CommonController {
@@ -28,7 +30,7 @@ public class CommonController {
 	public ResultBean getSmsCode(@RequestParam("mobile") String mobile) {
 		if (StringUtils.isBlank(mobile))
 			throw new CommonException(ErrorCode.MOBILE_NOTNULL);
-		if (ValidatorUtils.isMobile(mobile))
+		if (!ValidatorUtils.isMobile(mobile))
 			throw new CommonException(ErrorCode.MOBILE_FORMAT_ERROR);
 		String smsCode = RandomUtils.getNumCode(Constant.SMSCODE_NUM);
 		stringRedisTemplate.opsForValue().set(mobile, smsCode, Constant.SMSCODE_EXPIRE, TimeUnit.SECONDS);

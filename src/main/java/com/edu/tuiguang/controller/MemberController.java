@@ -9,6 +9,7 @@ import com.edu.tuiguang.enums.ErrorCode;
 import com.edu.tuiguang.service.MemberService;
 import com.edu.tuiguang.utils.JwtUtils;
 import com.edu.tuiguang.utils.ResultUtils;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
+@Api(value = "MemberController", description = "会员管理")
 @RestController
 @RequestMapping(value = {"/admin/member", "/app/member"})
 public class MemberController {
@@ -102,7 +104,8 @@ public class MemberController {
 			throw new CommonException(ErrorCode.SMSCODE_NOTNULL);
 
 		String redisCode = stringRedisTemplate.opsForValue().get(mobile);
-		if (redisCode != smsCode)
+		System.out.println(redisCode);
+		if (!smsCode.equals(redisCode))
 			throw new CommonException(ErrorCode.SMSCODE_ERROR);
 
 		Member memberForMobile = memberService.findByMobile(mobile);
