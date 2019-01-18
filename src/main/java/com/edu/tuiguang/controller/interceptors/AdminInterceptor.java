@@ -18,10 +18,6 @@ public class AdminInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
 		System.out.println("---------------------开始进入请求地址拦截----------------------------");
-		String origin = request.getHeader("Origin");
-		response.setHeader("Access-Control-Allow-Origin", origin);
-		response.setHeader("Access-Control-Allow-Methods", "*");
-		response.setHeader("Access-Control-Allow-Headers","Origin,Content-Type,Accept,Authorization,X-Requested-With");
 
 		String token = request.getHeader("Authorization");
 
