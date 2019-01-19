@@ -1,4 +1,4 @@
-package com.edu.tuiguang.handle;
+package com.edu.tuiguang.handler;
 
 import com.edu.tuiguang.entity.ResultBean;
 import com.edu.tuiguang.enums.ErrorCode;
@@ -11,14 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @ControllerAdvice
-public class ExceptionHandle {
+public class ExceptionHandler {
 
-	private static Logger logger = LoggerFactory.getLogger(ExceptionHandle.class);
+	private static Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
 	@ExceptionHandler(value = Exception.class)
 	@ResponseBody
